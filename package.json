@@ -1,0 +1,15 @@
+{
+  "name": "newsbias",
+  "version": "1.0.0",
+  "description": "NewsBias program",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js <port>"
+  },
+  "author": "Simas Juknelis",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}
