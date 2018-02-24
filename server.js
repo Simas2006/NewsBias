@@ -41,6 +41,28 @@ app.use("/vote",function(request,response) {
   response.end();
 });
 
+app.use("/create",function(request,response) {
+  request.url = decodeURI(request.url);
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  articles[Math.floor(Math.random() * 10e6).toString()] = {
+    url: qs[0],
+    title: qs[1],
+    votes: [
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0],
+      [0,0,0,0,0,0,0]
+    ]
+  }
+  console.log(`CREATE ${ip} ${qs[0]} ${qs[1]}`);
+});
+
+
+
 app.listen(PORT,function() {
   fs.readFile(__dirname + "/articles.json",function(err,data) {
     if ( err ) throw err;
