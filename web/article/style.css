@@ -1,0 +1,48 @@
+body {
+  font-family: Arial;
+}
+td {
+  width: 33vw;
+  text-align: center;
+  vertical-align: top;
+}
+h1 {
+  font-size: 300%;
+}
+.left {
+  color: blue;
+}
+.right {
+  color: red;
+}
+button {
+  border-radius: 50%;
+}
+button.left {
+  background-color: blue;
+}
+button.right {
+  background-color: red;
+}
+button.left,button.right {
+  color: white;
+}
+button.big {
+  height: 200px;
+  width: 200px;
+  font-size: 500%;
+}
+button.medium {
+  height: 150px;
+  width: 150px;
+  font-size: 300%;
+}
+button.small {
+  height: 100px;
+  width: 100px;
+  font-size: 150%;
+}
+iframe {
+  width: 33vw;
+  height: 100vh;
+}
