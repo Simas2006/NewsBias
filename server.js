@@ -6,7 +6,7 @@ var LIMIT = 15 * 60 * 1000;
 var recentVotes = {};
 var articles;
 
-app.use("/vote",function(request,response) {
+app.use("/api/vote",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
@@ -41,7 +41,7 @@ app.use("/vote",function(request,response) {
   response.end();
 });
 
-app.use("/create",function(request,response) {
+app.use("/api/create",function(request,response) {
   request.url = decodeURI(request.url);
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
@@ -64,7 +64,7 @@ app.use("/create",function(request,response) {
   response.end();
 });
 
-app.use("/info",function(request,response) {
+app.use("/api/info",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
@@ -85,7 +85,7 @@ app.use("/info",function(request,response) {
   response.end();
 });
 
-app.use("/list",function(request,response) {
+app.use("/api/list",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
@@ -100,6 +100,8 @@ app.use("/list",function(request,response) {
   response.end();
 });
 
+app.use("/web",express.static("web"));
+
 function calculateVotes(votes) {
   return votes[0][0]; // temporary
 }
@@ -108,6 +110,11 @@ app.listen(PORT,function() {
   fs.readFile(__dirname + "/articles.json",function(err,data) {
     if ( err ) throw err;
     articles = JSON.parse(data.toString());
+    setInterval(function() {
+      fs.writeFile(__dirname + "/articles.json",JSON.stringify(articles,null,2),function(err) {
+        if ( err ) throw err;
+      });
+    },20000);
   });
   console.log("Listening on port " + PORT);
 });
