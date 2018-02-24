@@ -46,7 +46,7 @@ app.use("/create",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
-  articles[Math.floor(Math.random() * 10e6).toString()] = {
+  articles[Math.floor(Math.random() * 10e5).toString()] = {
     url: qs[0],
     title: qs[1],
     votes: [
@@ -59,9 +59,50 @@ app.use("/create",function(request,response) {
     ]
   }
   console.log(`CREATE ${ip} ${qs[0]} ${qs[1]}`);
+  response.writeHead(200);
+  response.write("ok");
+  response.end();
 });
 
+app.use("/info",function(request,response) {
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  if ( ! articles[qs[0]] ) {
+    response.writeHead(404);
+    response.write("err_no_article");
+    response.end();
+    console.log(`REJECT notfound ${ip} ${qs[0]}`);
+    return;
+  }
+  console.log(`INFO ${ip} ${qs[0]}`);
+  response.writeHead(200);
+  response.write(JSON.stringify({
+    url: articles[qs[0]].url,
+    title: articles[qs[0]].title,
+    votes: calculateVotes(articles[qs[0]].votes)
+  }));
+  response.end();
+});
 
+app.use("/list",function(request,response) {
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  var items = {};
+  var keys = Object.keys(articles);
+  for ( var i = 0; i < keys.length; i++ ) {
+    items[keys[i]] = articles[keys[i]].title;
+  }
+  console.log(`LIST ${ip}`);
+  response.writeHead(200);
+  response.write(JSON.stringify(items));
+  response.end();
+});
+
+function calculateVotes(votes) {
+  return votes[0][0]; // temporary
+}
 
 app.listen(PORT,function() {
   fs.readFile(__dirname + "/articles.json",function(err,data) {
