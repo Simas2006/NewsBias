@@ -82,14 +82,14 @@ app.use("/api/info",function(request,response) {
     title: articles[qs[0]].title,
     votes: {
       left: {
-        sum: articles[qs[0]].votes.slice(0,3).reduce((totala,arr) => totala + arr.map(item => item.reduce((totalb,num) => totalb + num))),
-        rating: calculateVotes(articles[qs[0]],"left")
+        sum: arrSum(articles[qs[0]].votes.slice(0,3)),
+        rating: calculateVotes(articles[qs[0]].votes.slice(0,3),"left")
       },
       right: {
-        sum: articles[qs[0]].votes.slice(3).reduce((totala,arr) => totala + arr.map(item => item.reduce((totalb,num) => totalb + num))),
-        rating: calculateVotes(articles[qs[0]],"right")
+        sum: arrSum(articles[qs[0]].votes.slice(3)),
+        rating: calculateVotes(articles[qs[0]].votes.slice(3),"right")
       },
-      rating: calculateVotes(articles[qs[0]],"all")
+      rating: calculateVotes(articles[qs[0]].votes,"all")
     }
   }));
   response.end();
@@ -114,6 +114,15 @@ app.use("/web",express.static("web"));
 
 function calculateVotes(votes) {
   return votes[0][0]; // temporary
+}
+
+function arrSum(arr) {
+  var sum = 0;
+  for ( var i = 0; i < arr.length; i++ ) {
+    if ( typeof arr[i] == "object" ) sum += arrSum(arr[i]);
+    else sum += arr[i];
+  }
+  return sum;
 }
 
 app.listen(PORT,function() {
