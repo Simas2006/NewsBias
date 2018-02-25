@@ -113,7 +113,7 @@ app.use("/api/list",function(request,response) {
 app.use("/web",express.static("web"));
 
 function calculateVotes(votes) {
-  return votes[0][0]; // temporary
+  return Math.floor(Math.random() * 101) * (Math.random() > 0.5 ? -1 : 1);
 }
 
 function arrSum(arr) {
