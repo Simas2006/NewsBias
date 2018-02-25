@@ -82,11 +82,11 @@ app.use("/api/info",function(request,response) {
     title: articles[qs[0]].title,
     votes: {
       left: {
-        sum: articles[qs[0]].votes.slice(0,3).reduce((totala,arr) => totala + arr.map(item => item.reduce((totalb,num) => totalb + num)));
+        sum: articles[qs[0]].votes.slice(0,3).reduce((totala,arr) => totala + arr.map(item => item.reduce((totalb,num) => totalb + num))),
         rating: calculateVotes(articles[qs[0]],"left")
       },
       right: {
-        sum: articles[qs[0]].votes.slice(3).reduce((totala,arr) => totala + arr.map(item => item.reduce((totalb,num) => totalb + num)));
+        sum: articles[qs[0]].votes.slice(3).reduce((totala,arr) => totala + arr.map(item => item.reduce((totalb,num) => totalb + num))),
         rating: calculateVotes(articles[qs[0]],"right")
       },
       rating: calculateVotes(articles[qs[0]],"all")
