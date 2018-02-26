@@ -2,7 +2,7 @@ var data;
 
 function loadData(callback) {
   var req = new XMLHttpRequest();
-  req.open("GET","/api/info" + location.search);
+  req.open("GET",`/api/info${location.search}`);
   req.onload = function() {
     data = JSON.parse(this.responseText);
     callback();
@@ -22,6 +22,16 @@ function renderAll() {
     activeCount++;
     if ( activeCount >= 100 ) clearInterval(interval);
   },25);
+}
+
+function runVote(type) {
+  var req = new XMLHttpRequest();
+  req.open("GET",`/api/vote${location.search},${localStorage.getItem("party")},${type}`);
+  req.onload = function() {
+    data = JSON.parse(this.responseText);
+    callback();
+  }
+  req.send();
 }
 
 window.onload = function() {
