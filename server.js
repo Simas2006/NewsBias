@@ -2,7 +2,8 @@ var fs = require("fs");
 var express = require("express");
 var app = express();
 var PORT = process.argv[2] || 8000;
-var LIMIT = 15 * 60 * 1000;
+var WAIT_BETWEEN_VOTES = 15 * 60 * 1000;
+var VOTE_MODIFIER = 0.25;
 var recentVotes = {};
 var articles;
 
@@ -32,10 +33,10 @@ app.use("/api/vote",function(request,response) {
   }
   recentVotes[ip].push({
     article: qs[0],
-    expires: new Date().getTime() + LIMIT
+    expires: new Date().getTime() + WAIT_BETWEEN_VOTES
   });
   articles[qs[0]].votes[qs[1]][qs[2]]++;
-  console.log(`VOTE ${ip} ${qs[0]} ${qs[1]}`);
+  console.log(`VOTE ${ip} ${qs[0]} ${qs[1]} ${qs[2]}`);
   response.writeHead(200);
   response.write("ok");
   response.end();
@@ -112,8 +113,35 @@ app.use("/api/list",function(request,response) {
 
 app.use("/web",express.static("web"));
 
-function calculateVotes(votes) {
-  return Math.floor(Math.random() * 101) * (Math.random() > 0.5 ? -1 : 1);
+function calculateVotes(votes,type) {
+  var matrix = [
+    [-1, 0, 1,-1, 1, 0,-1],
+    [ 0,-1, 0, 0, 0,-1, 0],
+    [ 1, 0,-1, 1,-1, 0, 1],
+    [ 1, 0,-1, 1,-1, 0, 1],
+    [ 0,-1, 0, 0, 0,-1, 0],
+    [-1, 0, 1,-1, 1, 0,-1]
+  ];
+  var left = 0;
+  var right = 0;
+  var middle = 0;
+  for ( var i = 0; i < votes.length; i++ ) {
+    for ( var j = 0; j < votes[i].length; j++ ) {
+      var val = votes[i][j] + votes[i][j] * matrix[i][j] * VOTE_MODIFIER;
+      if ( j < 3 ) left += val * (j + 1);
+      else if ( j > 3 ) right += val * (j - 3);
+      else middle += val;
+    }
+  }
+  var rating = right - left;
+  if ( rating > 0 ) {
+    if ( rating - middle < 0 ) rating = 0;
+    else rating -= middle;
+  } else if ( rating < 0 ) {
+    if ( rating + middle > 0 ) rating = 0;
+    else rating += middle;
+  }
+  return rating;
 }
 
 function arrSum(arr) {
@@ -130,7 +158,7 @@ app.listen(PORT,function() {
     if ( err ) throw err;
     articles = JSON.parse(data.toString());
     setInterval(function() {
-      fs.writeFile(__dirname + "/articles.json",JSON.stringify(articles,null,2),function(err) {
+      fs.writeFile(__dirname + "/articles.json",JSON.stringify(articles),function(err) {
         if ( err ) throw err;
       });
     },20000);
