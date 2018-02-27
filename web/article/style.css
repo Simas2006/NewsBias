@@ -6,6 +6,9 @@ td {
   text-align: center;
   vertical-align: top;
 }
+td.align {
+  vertical-align: middle;
+}
 h1 {
   font-size: 300%;
 }
@@ -15,7 +18,7 @@ h1 {
 .right {
   color: red;
 }
-button {
+button:not(.rectangle) {
   border-radius: 50%;
 }
 button.left {
@@ -26,6 +29,9 @@ button.right {
 }
 button.left,button.right {
   color: white;
+}
+button.selected {
+  background-color: gold;
 }
 button.big {
   height: 200px;
@@ -42,7 +48,16 @@ button.small {
   width: 100px;
   font-size: 150%;
 }
-iframe {
-  width: 33vw;
-  height: 100vh;
+button.tiny {
+  width: 50px;
+  height: 50px;
+  font-size: 150%;
+}
+button.rectangle {
+  padding: 15px 30px;
+  background-color: #99ff33;
+  font-size: 100%;
+}
+textarea {
+  width: 100%;
 }
