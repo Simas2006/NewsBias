@@ -5,7 +5,10 @@ var PORT = process.argv[2] || 8000;
 var WAIT_BETWEEN_VOTES = 15 * 60 * 1000;
 var VOTE_MODIFIER = 0.25;
 var recentVotes = {};
-var articles;
+var articles,comments;
+
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 
 app.use("/api/vote",function(request,response) {
   var url = request.url.split("?")[0];
@@ -111,6 +114,27 @@ app.use("/api/list",function(request,response) {
   response.end();
 });
 
+app.post("/api/comment",function(request,response) {
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  if ( ! articles[qs[0]] ) {
+    response.writeHead(404);
+    response.write("err_no_article");
+    response.end();
+    console.log(`REJECT notfound ${ip} ${qs[0]}`);
+    return;
+  }
+  comments[qs[0]].push({
+    id: Math.floor(Math.random() * 10e6),
+    name: qs[1],
+    opinion: qs[3],
+    comment: encodeURI(request.body.comment),
+    replies: []
+  });
+  console.log(`COMMENT ${ip} ${qs[0]} ${qs[3]}`);
+});
+
 app.use("/web",express.static("web"));
 
 function calculateVotes(votes,type) {
@@ -157,11 +181,17 @@ app.listen(PORT,function() {
   fs.readFile(__dirname + "/articles.json",function(err,data) {
     if ( err ) throw err;
     articles = JSON.parse(data.toString());
-    setInterval(function() {
-      fs.writeFile(__dirname + "/articles.json",JSON.stringify(articles),function(err) {
-        if ( err ) throw err;
-      });
-    },20000);
+    fs.readFile(__dirname + "/comments.json",function(err,data) {
+      comments = JSON.parse(data.toString());
+      setInterval(function() {
+        fs.writeFile(__dirname + "/articles.json",JSON.stringify(articles),function(err) {
+          if ( err ) throw err;
+          fs.writeFile(__dirname + "/comments.json",JSON.stringify(comments),function(err) {
+            if ( err ) throw err;
+          });
+        });
+      },20000);
+    });
   });
   console.log("Listening on port " + PORT);
 });

@@ -1,4 +1,5 @@
 var data;
+var commentType;
 
 function loadData(callback) {
   var req = new XMLHttpRequest();
@@ -32,6 +33,22 @@ function runVote(type) {
     callback();
   }
   req.send();
+}
+
+function runComment(reply) {
+  var req = new XMLHttpRequest();
+  req.open("POST",`/api/comment${location.search},${document.getElementById("commentName").value},${reply || -1},${commentType || 1}`);
+  req.onload = function() {} // rerender comments
+  req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+  req.send(`comment=${document.getElementById("comment").value}`);
+}
+
+function setCommentType(type) {
+  document.getElementById("opinionSel0").className = "left tiny";
+  document.getElementById("opinionSel1").className = "center tiny";
+  document.getElementById("opinionSel2").className = "right tiny";
+  document.getElementById("opinionSel" + type).className = "selected tiny";
+  commentType = type;
 }
 
 window.onload = function() {
