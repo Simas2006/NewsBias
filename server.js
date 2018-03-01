@@ -84,6 +84,7 @@ app.use("/api/info",function(request,response) {
   response.write(JSON.stringify({
     url: articles[qs[0]].url,
     title: articles[qs[0]].title,
+    comments: comments[qs[0]],
     votes: {
       left: {
         sum: arrSum(articles[qs[0]].votes.slice(0,3)),
@@ -128,6 +129,7 @@ app.post("/api/comment",function(request,response) {
   comments[qs[0]].push({
     id: Math.floor(Math.random() * 10e6),
     name: qs[1],
+    votes: 0,
     opinion: qs[3],
     comment: encodeURI(request.body.comment),
     replies: []
