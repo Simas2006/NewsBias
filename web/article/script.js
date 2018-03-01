@@ -1,9 +1,9 @@
 var data;
 var commentType;
 
-function loadData(callback) {
+function simpleAJAX(url,callback) {
   var req = new XMLHttpRequest();
-  req.open("GET",`/api/info${location.search}`);
+  req.open("GET",url);
   req.onload = function() {
     data = JSON.parse(this.responseText);
     callback();
@@ -63,13 +63,7 @@ function renderAll() {
 }
 
 function runVote(type) {
-  var req = new XMLHttpRequest();
-  req.open("GET",`/api/vote${location.search},${localStorage.getItem("party")},${type}`);
-  req.onload = function() {
-    data = JSON.parse(this.responseText);
-    callback();
-  }
-  req.send();
+  simpleAJAX(`/api/vote${location.search},${localStorage.getItem("party")},${type}`,location.reload);
 }
 
 function runComment(reply) {
@@ -89,5 +83,5 @@ function setCommentType(type) {
 }
 
 window.onload = function() {
-  loadData(renderAll);
+  simpleAJAX(`/api/info${location.search}`,renderAll);
 }
