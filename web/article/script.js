@@ -12,6 +12,42 @@ function loadData(callback) {
 }
 
 function renderAll() {
+  function renderCommentChain(chain,right) {
+    if ( ! right ) right = 0;
+    if ( chain.length == 0 ) return;
+    chain.sort((a,b) => b.votes - a.votes);
+    var comments = document.getElementById("comments");
+    for ( var i = 0; i < chain.length; i++ ) {
+      var row = document.createElement("tr");
+      var votes = document.createElement("td");
+      var upvote = document.createElement("button");
+      upvote.innerHTML = "&#8593;";
+      upvote.className = "tiny block upvote";
+      votes.appendChild(upvote);
+      var value = document.createElement("button");
+      value.innerText = chain[i].votes;
+      value.className = "tiny block";
+      votes.appendChild(value);
+      var downvote = document.createElement("button");
+      downvote.innerHTML = "&#8595;";
+      downvote.className = "tiny block downvote";
+      votes.appendChild(downvote);
+      votes.appendChild(document.createElement("hr"));
+      row.appendChild(votes);
+      var comment = document.createElement("td");
+      var b = document.createElement("b");
+      b.innerText = chain[i].name;
+      b.className = ["left","center","right"][chain[i].opinion];
+      comment.appendChild(b);
+      var p = document.createElement("p");
+      p.innerText = decodeURIComponent(chain[i].comment);
+      comment.appendChild(p);
+      comment.style.paddingLeft = right + "px";
+      row.appendChild(comment);
+      comments.appendChild(row);
+      renderCommentChain(chain[i].replies,right + 50);
+    }
+  }
   var activeCount = 0;
   var interval = setInterval(function() {
     document.getElementById("complete").innerText = `${Math.min(activeCount,Math.abs(data.votes.rating))}% Biased`;
@@ -23,6 +59,7 @@ function renderAll() {
     activeCount++;
     if ( activeCount >= 100 ) clearInterval(interval);
   },25);
+  renderCommentChain(data.comments);
 }
 
 function runVote(type) {

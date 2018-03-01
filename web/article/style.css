@@ -18,6 +18,18 @@ h1 {
 .right {
   color: red;
 }
+.center {
+  color: black;
+}
+.alignleft {
+  text-align: left;
+}
+.big {
+  font-size: 200%;
+}
+.block {
+  display: block;
+}
 button:not(.rectangle) {
   border-radius: 50%;
 }
@@ -26,6 +38,15 @@ button.left {
 }
 button.right {
   background-color: red;
+}
+button.center {
+  background-color: white;
+}
+button.upvote {
+  background-color: orange;
+}
+button.downvote {
+  background-color: purple;
 }
 button.left,button.right {
   color: white;
