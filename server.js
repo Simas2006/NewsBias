@@ -22,7 +22,7 @@ app.use("/api/vote",function(request,response) {
     return;
   }
   if ( ! recentVotes[ip] ) recentVotes[ip] = [];
-  var item = recentVotes[ip].filter(item => item.article == qs[0])[0];
+  var item = recentVotes[ip].filter(item => item.article == qs[0] && item.comment == null)[0];
   if ( item ) {
     if ( item.expires <= new Date().getTime() ) {
       recentVotes[ip].splice(recentVotes[ip].indexOf(item),1);
@@ -36,10 +36,74 @@ app.use("/api/vote",function(request,response) {
   }
   recentVotes[ip].push({
     article: qs[0],
+    comment: null,
     expires: new Date().getTime() + WAIT_BETWEEN_VOTES
   });
   articles[qs[0]].votes[qs[1]][qs[2]]++;
   console.log(`VOTE ${ip} ${qs[0]} ${qs[1]} ${qs[2]}`);
+  response.writeHead(200);
+  response.write("ok");
+  response.end();
+});
+
+app.use("/api/commentVote",function(request,response) {
+  function searchTree(chain,id,move) {
+    if ( chain.length == 0 ) return false;
+    for ( var i = 0; i < chain.length; i++ ) {
+      if ( chain[i].id == id ) {
+        chain[i].votes += move;
+        return true;
+      }
+      if ( searchTree(chain[i].replies,id) ) return true;
+    }
+    return false;
+  }
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  if ( ! articles[qs[0]] ) {
+    console.log(`REJECT notfound ${ip} ${qs[0]}`);
+    response.writeHead(404);
+    response.write("err_no_article");
+    response.end();
+    return;
+  }
+  if ( ["up","down"].indexOf(qs[2]) == -1 ) {
+    console.log(`REJECT nooption ${ip} ${qs[0]} ${qs[1]}`);
+    response.writeHead(400);
+    response.write("err_no_option");
+    response.end();
+    return;
+  }
+  if ( ! recentVotes[ip] ) recentVotes[ip] = [];
+  var item = recentVotes[ip].filter(item => item.article == qs[0] && item.comment == qs[1])[0];
+  if ( item ) {
+    if ( item.expires <= new Date().getTime() ) {
+      recentVotes[ip].splice(recentVotes[ip].indexOf(item),1);
+    } else {
+      console.log(`REJECT expire ${ip} ${qs[0]} ${qs[1]}`);
+      response.writeHead(400);
+      response.write("err_no_expire");
+      response.end();
+      return;
+    }
+  }
+  recentVotes[ip].push({
+    article: qs[0],
+    comment: qs[1],
+    expires: new Date().getTime() + WAIT_BETWEEN_VOTES
+  });
+  var ret = searchTree(comments[qs[0]],qs[1],qs[2] == "up" ? 1 : -1);
+  if ( ! ret ) {
+    if ( ! articles[qs[0]] ) {
+      console.log(`REJECT notfound ${ip} ${qs[0]} ${qs[1]}`);
+      response.writeHead(404);
+      response.write("err_no_article");
+      response.end();
+      return;
+    }
+  }
+  console.log(`COMMENTVOTE ${ip} ${qs[0]} ${qs[1]} ${qs[2]}`)
   response.writeHead(200);
   response.write("ok");
   response.end();
