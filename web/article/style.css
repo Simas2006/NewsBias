@@ -6,11 +6,11 @@ td {
   text-align: center;
   vertical-align: top;
 }
-td.align {
-  vertical-align: middle;
-}
 h1 {
   font-size: 300%;
+}
+textarea {
+  width: 100%;
 }
 .left {
   color: blue;
@@ -29,6 +29,9 @@ h1 {
 }
 .block {
   display: block;
+}
+td.align {
+  vertical-align: middle;
 }
 button:not(.rectangle) {
   border-radius: 50%;
@@ -74,11 +77,29 @@ button.tiny {
   height: 50px;
   font-size: 150%;
 }
+button.wide {
+  width: 75px;
+}
 button.rectangle {
   padding: 15px 30px;
   background-color: #99ff33;
   font-size: 100%;
 }
-textarea {
+#dropdown {
+  background-color: white;
+  width: 150px;
+  border: 1px solid #000;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: none;
+}
+#dropdown > button {
+  background-color: #eee;
   width: 100%;
+  padding: 0px;
+  padding-left: 10px;
+  text-align: left;
+}
+#dropdown > button:hover {
+  background-color: #ccc;
 }

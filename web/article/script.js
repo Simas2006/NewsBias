@@ -1,5 +1,6 @@
 var data;
 var commentType;
+var dialogSelected;
 
 function simpleAJAX(url,callback) {
   var req = new XMLHttpRequest();
@@ -34,8 +35,28 @@ function renderAll() {
       votes.appendChild(upvote);
       var value = document.createElement("button");
       value.innerText = chain[i].votes;
-      value.className = "tiny block";
+      value.className = "tiny";
       votes.appendChild(value);
+      var options = document.createElement("button");
+      options.innerHTML = "	&#8226; &#8226; &#8226;";
+      options.className = "tiny wide";
+      options.setAttribute("comment_id",chain[i].id);
+      options.onclick = function() {
+        var dropdown = document.getElementById("dropdown");
+        if ( dialogSelected != this.getAttribute("comment_id") ) {
+          var position = this.getBoundingClientRect();
+          var bodyPosition = document.body.getBoundingClientRect();
+          dropdown.style.position = "absolute";
+          dropdown.style.left = (position.left - bodyPosition.left + position.width * 0.5) + "px";
+          dropdown.style.top = (position.top - bodyPosition.top + position.height * 0.5) + "px";
+          dropdown.style.display = "block";
+          dialogSelected = this.getAttribute("comment_id");
+        } else {
+          dropdown.style.display = "none";
+          dialogSelected = null;
+        }
+      }
+      votes.appendChild(options);
       var downvote = document.createElement("button");
       downvote.innerHTML = "&#8595;";
       downvote.className = "tiny block downvote";
