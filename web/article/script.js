@@ -5,8 +5,7 @@ function simpleAJAX(url,callback) {
   var req = new XMLHttpRequest();
   req.open("GET",url);
   req.onload = function() {
-    data = JSON.parse(this.responseText);
-    callback();
+    callback(this.responseText);
   }
   req.send();
 }
@@ -23,6 +22,15 @@ function renderAll() {
       var upvote = document.createElement("button");
       upvote.innerHTML = "&#8593;";
       upvote.className = "tiny block upvote";
+      upvote.setAttribute("comment_id",chain[i].id);
+      upvote.onclick = function() {
+        simpleAJAX(`/api/commentvote${location.search},${this.getAttribute("comment_id")},up`,function() {
+          simpleAJAX(`/api/info${location.search}`,function(result) {
+            data = JSON.parse(result);
+            renderAll();
+          });
+        });
+      }
       votes.appendChild(upvote);
       var value = document.createElement("button");
       value.innerText = chain[i].votes;
@@ -31,6 +39,15 @@ function renderAll() {
       var downvote = document.createElement("button");
       downvote.innerHTML = "&#8595;";
       downvote.className = "tiny block downvote";
+      downvote.setAttribute("comment_id",chain[i].id);
+      downvote.onclick = function() {
+        simpleAJAX(`/api/commentvote${location.search},${this.getAttribute("comment_id")},down`,function() {
+          simpleAJAX(`/api/info${location.search}`,function(result) {
+            data = JSON.parse(result);
+            renderAll();
+          });
+        });
+      }
       votes.appendChild(downvote);
       votes.appendChild(document.createElement("hr"));
       row.appendChild(votes);
@@ -59,6 +76,10 @@ function renderAll() {
     activeCount++;
     if ( activeCount >= 100 ) clearInterval(interval);
   },25);
+  var comments = document.getElementById("comments");
+  while ( comments.firstChild ) {
+    comments.removeChild(comments.firstChild);
+  }
   renderCommentChain(data.comments);
 }
 
@@ -69,7 +90,7 @@ function runVote(type) {
 function runComment(reply) {
   var req = new XMLHttpRequest();
   req.open("POST",`/api/comment${location.search},${document.getElementById("commentName").value},${reply || -1},${commentType || 1}`);
-  req.onload = function() {} // rerender comments
+  req.onload = renderAll;
   req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
   req.send(`comment=${document.getElementById("comment").value}`);
 }
@@ -83,5 +104,8 @@ function setCommentType(type) {
 }
 
 window.onload = function() {
-  simpleAJAX(`/api/info${location.search}`,renderAll);
+  simpleAJAX(`/api/info${location.search}`,function(result) {
+    data = JSON.parse(result);
+    renderAll();
+  });
 }
