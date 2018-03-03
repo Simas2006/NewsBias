@@ -22,7 +22,7 @@ function renderAll() {
       var votes = document.createElement("td");
       var upvote = document.createElement("button");
       upvote.innerHTML = "&#8593;";
-      upvote.className = "tiny block upvote";
+      upvote.className = "tiny upvote";
       upvote.setAttribute("comment_id",chain[i].id);
       upvote.onclick = function() {
         simpleAJAX(`/api/commentvote${location.search},${this.getAttribute("comment_id")},up`,function() {
@@ -33,6 +33,7 @@ function renderAll() {
         });
       }
       votes.appendChild(upvote);
+      votes.appendChild(document.createElement("br"));
       var value = document.createElement("button");
       value.innerText = chain[i].votes;
       value.className = "tiny";
@@ -57,9 +58,10 @@ function renderAll() {
         }
       }
       votes.appendChild(options);
+      votes.appendChild(document.createElement("br"));
       var downvote = document.createElement("button");
       downvote.innerHTML = "&#8595;";
-      downvote.className = "tiny block downvote";
+      downvote.className = "tiny downvote";
       downvote.setAttribute("comment_id",chain[i].id);
       downvote.onclick = function() {
         simpleAJAX(`/api/commentvote${location.search},${this.getAttribute("comment_id")},down`,function() {
@@ -70,17 +72,48 @@ function renderAll() {
         });
       }
       votes.appendChild(downvote);
-      votes.appendChild(document.createElement("hr"));
+      votes.style.width = "20%";
       row.appendChild(votes);
       var comment = document.createElement("td");
       var b = document.createElement("b");
-      b.innerText = chain[i].name;
+      b.innerText = decodeURIComponent(chain[i].name);
       b.className = ["left","center","right"][chain[i].opinion];
       comment.appendChild(b);
       var p = document.createElement("p");
       p.innerText = decodeURIComponent(chain[i].comment);
       comment.appendChild(p);
+      var reply = document.createElement("div");
+      var textbox = document.createElement("textarea");
+      textbox.rows = "1";
+      textbox.placeholder = "Add a reply...";
+      textbox.id = "replyBox:" + chain[i].id;
+      reply.appendChild(textbox);
+      var panel = document.createElement("div");
+      var button1 = document.createElement("button");
+      button1.className = "rectangle";
+      button1.innerText = "Comment";
+      button1.onclick = function() {
+        console.log("comment",this.id);
+      }
+      panel.appendChild(button1);
+      var button2 = document.createElement("button");
+      button2.className = "rectangle";
+      button2.innerText = "Cancel";
+      button2.onclick = function() {
+        var textbox = document.getElementById(this.parentElement.id.split(":").slice(0,2).join(":"));
+        textbox.value = "";
+        this.parentElement.style.display = "none";
+      }
+      panel.appendChild(button2);
+      panel.appendChild(document.createElement("br"));
+      panel.id = "replyBox:" + chain[i].id + ":panel";
+      panel.style.display = "none";
+      reply.appendChild(panel);
+      reply.id = "reply:" + i;
+      comment.appendChild(reply);
       comment.style.paddingLeft = right + "px";
+      comment.style.width = "80%";
+      comment.className = "alignleft";
       row.appendChild(comment);
       comments.appendChild(row);
       renderCommentChain(chain[i].replies,right + 50);
@@ -124,9 +157,24 @@ function setCommentType(type) {
   commentType = type;
 }
 
+function dropdownOperation(type) {
+  if ( type == 0 ) {
+
+  }
+}
+
 window.onload = function() {
   simpleAJAX(`/api/info${location.search}`,function(result) {
     data = JSON.parse(result);
     renderAll();
+    var commentBoxes = document.getElementsByTagName("textarea");
+    for ( var i = 0; i < commentBoxes.length; i++ ) {
+      commentBoxes[i].onfocus = function() {
+        document.getElementById(this.id + ":panel").style.display = "block";
+      }
+      commentBoxes[i].onblur = function() {
+        if ( this.value == "" ) document.getElementById(this.id + ":panel").style.display = "none";
+      }
+    }
   });
 }

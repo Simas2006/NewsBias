@@ -11,6 +11,10 @@ h1 {
 }
 textarea {
   width: 100%;
+  font-size: 100%;
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
 }
 .left {
   color: blue;
@@ -81,8 +85,9 @@ button.wide {
   width: 75px;
 }
 button.rectangle {
-  padding: 15px 30px;
-  background-color: #99ff33;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #7f7;
   font-size: 100%;
 }
 #dropdown {

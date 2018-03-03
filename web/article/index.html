@@ -73,14 +73,12 @@
     </tr>
     <tr>
       <td colspan="3">
-        <textarea rows="20" id="comment"></textarea>
+        <textarea rows="1" id="comment" width="100%" placeholder="Add a comment..."></textarea>
       </td>
     </tr>
-    <tr>
-      <td>
-        <button onclick="runComment()" class="rectangle">Comment</button>
-      </td>
-      <td>
+    <tr id="comment:panel" style="display: none">
+      <td class="alignleft">
+        <button onclick="runComment(null)" class="rectangle">Comment</button>
         <button onclick="document.getElementById('comment').value = ''" class="rectangle">Cancel</button>
       </td>
     </tr>
@@ -90,13 +88,13 @@
       </tr>
     </tr>
     <tr>
-      <td>
-        <table id="comments"></table>
+      <td colspan="3">
+        <table id="comments" width="100%"></table>
       </td>
     </tr>
   </table>
   <div id="dropdown">
-    <button class="rectangle">Reply</button>
+    <button class="rectangle" onclick="dropdownOperation(0)">Reply</button>
     <button class="rectangle">Report</button>
     <button class="rectangle">Remove</button>
   </div>
