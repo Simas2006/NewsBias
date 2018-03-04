@@ -190,6 +190,9 @@ function renderAll() {
     commentBoxes[i].onblur = function() {
       if ( this.value == "" ) document.getElementById(this.id + ":panel").style.display = "none";
     }
+    commentBoxes[i].onkeyup = function() {
+      this.rows = this.value.split("\n").length;
+    }
   }
 }
 
@@ -205,6 +208,10 @@ function runVote(type) {
 }
 
 function runComment(text,replyId,id) {
+  if ( document.getElementById(id + ":name").value == "" ) {
+    alert("You need to set a name!");
+    return;
+  }
   var req = new XMLHttpRequest();
   req.open("POST",`/api/comment${location.search},${document.getElementById(id + ":name").value},${replyId || -1},${replyId ? 1 : (commentType || 1)}`);
   req.onload = function() {
