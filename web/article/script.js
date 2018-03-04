@@ -75,13 +75,18 @@ function renderAll() {
       votes.style.width = "20%";
       row.appendChild(votes);
       var comment = document.createElement("td");
-      if ( true ) {
-
-      }
       var b = document.createElement("b");
       b.innerText = decodeURIComponent(chain[i].name);
       b.className = ["left","center","right"][chain[i].opinion];
       comment.appendChild(b);
+      var selected = data.comments.filter(item => item.votes > 0 && item.opinion == chain[i].opinion).sort((a,b) => b.votes - a.votes);
+      if ( selected[0] && selected[0].id == chain[i].id ) {
+        var star = document.createElement("img");
+        star.src = "/web/star.png";
+        star.width = "30";
+        star.height = "30";
+        comment.appendChild(star);
+      }
       var p = document.createElement("p");
       p.innerText = decodeURIComponent(chain[i].comment);
       comment.appendChild(p);
@@ -177,6 +182,15 @@ function renderAll() {
   renderTopComment(0);
   renderTopComment(1);
   renderTopComment(2);
+  var commentBoxes = document.getElementsByTagName("textarea");
+  for ( var i = 0; i < commentBoxes.length; i++ ) {
+    commentBoxes[i].onfocus = function() {
+      document.getElementById(this.id + ":panel").style.display = "block";
+    }
+    commentBoxes[i].onblur = function() {
+      if ( this.value == "" ) document.getElementById(this.id + ":panel").style.display = "none";
+    }
+  }
 }
 
 function runVote(type) {
@@ -195,6 +209,9 @@ function runComment(text,replyId,id) {
     simpleAJAX(`/api/info${location.search}`,function(result) {
       data = JSON.parse(result);
       renderAll();
+      if ( id == "comment" ) {
+        document.getElementById("comment").value = "";
+      }
     });
   }
   req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -219,14 +236,5 @@ window.onload = function() {
   simpleAJAX(`/api/info${location.search}`,function(result) {
     data = JSON.parse(result);
     renderAll();
-    var commentBoxes = document.getElementsByTagName("textarea");
-    for ( var i = 0; i < commentBoxes.length; i++ ) {
-      commentBoxes[i].onfocus = function() {
-        document.getElementById(this.id + ":panel").style.display = "block";
-      }
-      commentBoxes[i].onblur = function() {
-        if ( this.value == "" ) document.getElementById(this.id + ":panel").style.display = "none";
-      }
-    }
   });
 }

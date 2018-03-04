@@ -16,6 +16,10 @@ textarea {
   border-left: 0px;
   border-right: 0px;
 }
+input {
+  height: 30px;
+  font-size: 100%;
+}
 .left {
   color: blue;
 }
@@ -24,6 +28,9 @@ textarea {
 }
 .center {
   color: black;
+}
+.yellow {
+  color: rgb(299,173,64);
 }
 .alignleft {
   text-align: left;
