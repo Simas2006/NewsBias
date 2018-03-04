@@ -198,6 +198,8 @@ function runVote(type) {
     simpleAJAX(`/api/info${location.search}`,function(result) {
       data = JSON.parse(result);
       renderAll();
+      if ( type < 3 ) setCommentType(0);
+      if ( type > 3 ) setCommentType(2);
     });
   });
 }
@@ -236,5 +238,6 @@ window.onload = function() {
   simpleAJAX(`/api/info${location.search}`,function(result) {
     data = JSON.parse(result);
     renderAll();
+    setCommentType(1);
   });
 }
