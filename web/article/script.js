@@ -150,7 +150,7 @@ function runVote(type) {
 
 function runComment(text,replyId,id) {
   var req = new XMLHttpRequest();
-  req.open("POST",`/api/comment${location.search},${document.getElementById(id + ":name").value},${replyId || -1},${commentType || 1}`);
+  req.open("POST",`/api/comment${location.search},${document.getElementById(id + ":name").value},${replyId || -1},${replyId ? 1 : (commentType || 1)}`);
   req.onload = function() {
     simpleAJAX(`/api/info${location.search}`,function(result) {
       data = JSON.parse(result);
