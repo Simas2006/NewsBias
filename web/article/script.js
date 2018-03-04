@@ -94,7 +94,7 @@ function renderAll() {
       button1.innerText = "Comment";
       button1.onclick = function() {
         var textbox = document.getElementById(this.parentElement.id.split(":").slice(0,2).join(":"));
-        runComment(textbox.value,this.parentElement.id.split(":")[1]);
+        runComment(textbox.value,this.parentElement.id.split(":")[1],this.parentElement.id);
       }
       panel.appendChild(button1);
       var button2 = document.createElement("button");
@@ -106,6 +106,12 @@ function renderAll() {
         this.parentElement.style.display = "none";
       }
       panel.appendChild(button2);
+      var name = document.createElement("input");
+      name.size = "40";
+      name.maxlength = "40";
+      name.placeholder = "Name";
+      name.id = "replyBox:" + chain[i].id + ":panel:name";
+      panel.appendChild(name);
       panel.appendChild(document.createElement("br"));
       panel.id = "replyBox:" + chain[i].id + ":panel";
       panel.style.display = "none";
@@ -142,10 +148,15 @@ function runVote(type) {
   simpleAJAX(`/api/vote${location.search},${localStorage.getItem("party")},${type}`,location.reload);
 }
 
-function runComment(text,replyId) {
+function runComment(text,replyId,id) {
   var req = new XMLHttpRequest();
-  req.open("POST",`/api/comment${location.search},${document.getElementById("commentName").value},${replyId || -1},${commentType || 1}`);
-  req.onload = renderAll;
+  req.open("POST",`/api/comment${location.search},${document.getElementById(id + ":name").value},${replyId || -1},${commentType || 1}`);
+  req.onload = function() {
+    simpleAJAX(`/api/info${location.search}`,function(result) {
+      data = JSON.parse(result);
+      renderAll();
+    });
+  }
   req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
   req.send(`comment=${text}`);
 }

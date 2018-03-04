@@ -62,7 +62,7 @@
     <tr>
       <td colspan="2" class="align">
         <p>Name:</p>
-        <input type="text" id="commentName" maxlength="40" size="40" />
+        <input type="text" id="comment:name" maxlength="40" size="40" />
       </td>
       <td>
         <p>Opinion:</p>
@@ -78,7 +78,7 @@
     </tr>
     <tr id="comment:panel" style="display: none">
       <td class="alignleft">
-        <button onclick="runComment(document.getElementById('comment').value,null)" class="rectangle">Comment</button>
+        <button onclick="runComment(document.getElementById('comment').value,null,'comment')" class="rectangle">Comment</button>
         <button onclick="document.getElementById('comment').value = ''" class="rectangle">Cancel</button>
       </td>
     </tr>
