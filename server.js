@@ -54,7 +54,7 @@ app.use("/api/commentVote",function(request,response) {
         chain[i].votes += move;
         return true;
       }
-      if ( searchTree(chain[i].replies,id) ) return true;
+      if ( searchTree(chain[i].replies,id,move) ) return true;
     }
     return false;
   }
@@ -180,6 +180,25 @@ app.use("/api/list",function(request,response) {
 });
 
 app.post("/api/comment",function(request,response) {
+  function searchTree(chain,id,name,opinion,comment) {
+    if ( chain.length == 0 ) return false;
+    for ( var i = 0; i < chain.length; i++ ) {
+      console.log(chain[i].id,id);
+      if ( chain[i].id == id ) {
+        chain[i].replies.push({
+          id: Math.floor(Math.random() * 10e6),
+          name: name,
+          votes: 0,
+          opinion: opinion,
+          comment: comment,
+          replies: []
+        });
+        return true;
+      }
+      if ( searchTree(chain[i].replies,id,name,opinion,comment) ) return true;
+    }
+    return false;
+  }
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
@@ -190,15 +209,22 @@ app.post("/api/comment",function(request,response) {
     console.log(`REJECT notfound ${ip} ${qs[0]}`);
     return;
   }
-  comments[qs[0]].push({
-    id: Math.floor(Math.random() * 10e6),
-    name: qs[1],
-    votes: 0,
-    opinion: qs[3],
-    comment: encodeURI(request.body.comment),
-    replies: []
-  });
-  console.log(`COMMENT ${ip} ${qs[0]} ${qs[3]}`);
+  if ( qs[2] == -1 ) {
+    comments[qs[0]].push({
+      id: Math.floor(Math.random() * 10e6),
+      name: qs[1],
+      votes: 0,
+      opinion: qs[3],
+      comment: encodeURI(request.body.comment),
+      replies: []
+    });
+  } else {
+    searchTree(comments[qs[0]],qs[2],qs[1],qs[3],request.body.comment);
+  }
+  console.log(`COMMENT ${ip} ${qs[0]} ${qs[2]}`);
+  response.writeHead(200);
+  response.write("ok");
+  response.end();
 });
 
 app.use("/web",express.static("web"));

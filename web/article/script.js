@@ -93,7 +93,8 @@ function renderAll() {
       button1.className = "rectangle";
       button1.innerText = "Comment";
       button1.onclick = function() {
-        console.log("comment",this.id);
+        var textbox = document.getElementById(this.parentElement.id.split(":").slice(0,2).join(":"));
+        runComment(textbox.value,this.parentElement.id.split(":")[1]);
       }
       panel.appendChild(button1);
       var button2 = document.createElement("button");
@@ -141,12 +142,12 @@ function runVote(type) {
   simpleAJAX(`/api/vote${location.search},${localStorage.getItem("party")},${type}`,location.reload);
 }
 
-function runComment(reply) {
+function runComment(text,replyId) {
   var req = new XMLHttpRequest();
-  req.open("POST",`/api/comment${location.search},${document.getElementById("commentName").value},${reply || -1},${commentType || 1}`);
+  req.open("POST",`/api/comment${location.search},${document.getElementById("commentName").value},${replyId || -1},${commentType || 1}`);
   req.onload = renderAll;
   req.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
-  req.send(`comment=${document.getElementById("comment").value}`);
+  req.send(`comment=${text}`);
 }
 
 function setCommentType(type) {
