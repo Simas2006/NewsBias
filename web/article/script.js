@@ -75,6 +75,9 @@ function renderAll() {
       votes.style.width = "20%";
       row.appendChild(votes);
       var comment = document.createElement("td");
+      if ( true ) {
+
+      }
       var b = document.createElement("b");
       b.innerText = decodeURIComponent(chain[i].name);
       b.className = ["left","center","right"][chain[i].opinion];
@@ -126,6 +129,35 @@ function renderAll() {
       renderCommentChain(chain[i].replies,right + 50);
     }
   }
+  function renderTopComment(opinion) {
+    var element = document.getElementById(["left","center","right"][opinion] + "Box");
+    while ( element.firstChild ) {
+      element.removeChild(element.firstChild);
+    }
+    var selected = data.comments.filter(item => item.votes > 0 && item.opinion == opinion).sort((a,b) => b.votes - a.votes);
+    var item = selected[0] || null;
+    var b = document.createElement("b");
+    b.innerText = "\n" + ["Left","Center","Right"][opinion] + " Top Opinion\n";
+    element.appendChild(b);
+    if ( item ) {
+      var text = document.createElement("p");
+      text.className = "alignleft";
+      text.innerText = decodeURIComponent(item.comment);
+      text.style.paddingLeft = "20px";
+      element.appendChild(text);
+      var author = document.createElement("p");
+      author.className = "alignright";
+      author.innerText = `~ ${decodeURIComponent(item.name)} (${item.votes} vote${item.votes > 1 ? "s" : ""})`;
+      author.style.paddingRight = "20px";
+      element.appendChild(author);
+    } else {
+      var text = document.createElement("p");
+      text.className = "alignleft";
+      text.innerText = "No opinion available.";
+      text.style.paddingLeft = "20px";
+      element.appendChild(text);
+    }
+  }
   var activeCount = 0;
   var interval = setInterval(function() {
     document.getElementById("complete").innerText = `${Math.min(activeCount,Math.abs(data.votes.rating))}% Biased`;
@@ -142,10 +174,18 @@ function renderAll() {
     comments.removeChild(comments.firstChild);
   }
   renderCommentChain(data.comments);
+  renderTopComment(0);
+  renderTopComment(1);
+  renderTopComment(2);
 }
 
 function runVote(type) {
-  simpleAJAX(`/api/vote${location.search},${localStorage.getItem("party")},${type}`,location.reload);
+  simpleAJAX(`/api/vote${location.search},${localStorage.getItem("party")},${type}`,function() {
+    simpleAJAX(`/api/info${location.search}`,function(result) {
+      data = JSON.parse(result);
+      renderAll();
+    });
+  });
 }
 
 function runComment(text,replyId,id) {

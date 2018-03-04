@@ -28,6 +28,9 @@ textarea {
 .alignleft {
   text-align: left;
 }
+.alignright {
+  text-align: right;
+}
 .big {
   font-size: 200%;
 }
@@ -90,10 +93,27 @@ button.rectangle {
   background-color: #7f7;
   font-size: 100%;
 }
+td.fade {
+  color: black;
+  height: 37vh;
+  border-radius: 5%;
+}
+td.left.fade {
+  border: 5px solid blue;
+  background-color: #99f;
+}
+td.center.fade {
+  border: 5px solid black;
+  background-color: #999;
+}
+td.right.fade {
+  border: 5px solid red;
+  background-color: #f99;
+}
 #dropdown {
   background-color: white;
   width: 150px;
-  border: 1px solid #000;
+  border: 1px solid black;
   padding-top: 10px;
   padding-bottom: 10px;
   display: none;
