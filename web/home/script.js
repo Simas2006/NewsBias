@@ -27,8 +27,9 @@ function renderAll() {
     element.appendChild(heading);
     element.appendChild(document.createElement("hr"));
     for ( var j = 0; j < searchData[i].length; j++ ) {
-      var title = document.createElement("b");
+      var title = document.createElement("a");
       title.innerText = `${searchData[i][j].title} - ${Math.abs(searchData[i][j].rating)}% Biased`;
+      title.href = "/web/article/index.html?" + searchData[i][j].id;
       var opinion = 1;
       if ( searchData[i][j].rating > 0 ) {
         title.className = "right";
@@ -36,6 +37,8 @@ function renderAll() {
       } else if ( searchData[i][j].rating < 0 ) {
         title.className = "left";
         opinion = 0;
+      } else {
+        title.className = "center";
       }
       element.appendChild(title);
       element.appendChild(document.createElement("br"));
@@ -44,7 +47,7 @@ function renderAll() {
       selected = selected[0] || null;
       if ( selected ) {
         selected = decodeURIComponent(selected.comment).split("\n").join(" ");
-        comment.value = `Top supporting comment: ${selected}`;
+        comment.value = `Top supporting comment:\n${selected}`;
       } else {
         comment.value = "No supporting comment";
       }

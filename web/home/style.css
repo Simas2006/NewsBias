@@ -7,11 +7,16 @@ h3 {
 p {
   display: inline;
 }
+a {
+  font-weight: bold;
+  text-decoration: none;
+}
 textarea {
   border: 0px;
   resize: none;
   color: black;
   font-size: 75%;
+  width: 98%;
 }
 td {
   width: 33vw;
@@ -25,6 +30,9 @@ td.screen {
 }
 .left {
   color: blue;
+}
+.center {
+  color: black;
 }
 .right {
   color: red;
