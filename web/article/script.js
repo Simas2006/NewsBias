@@ -194,6 +194,8 @@ function renderAll() {
       this.rows = this.value.split("\n").length;
     }
   }
+  document.getElementById("link").href = data.url;
+  document.getElementById("link").innerText = data.title;
 }
 
 function runVote(type) {

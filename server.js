@@ -114,7 +114,8 @@ app.use("/api/create",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
-  articles[Math.floor(Math.random() * 10e5).toString()] = {
+  var id = Math.floor(Math.random() * 10e5).toString();
+  articles[id] = {
     url: qs[0],
     title: qs[1],
     votes: [
@@ -126,6 +127,7 @@ app.use("/api/create",function(request,response) {
       [0,0,0,0,0,0,0]
     ]
   }
+  comments[id] = [];
   console.log(`CREATE ${ip} ${qs[0]} ${qs[1]}`);
   response.writeHead(200);
   response.write("ok");
