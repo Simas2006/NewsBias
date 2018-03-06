@@ -229,6 +229,66 @@ app.post("/api/comment",function(request,response) {
   response.end();
 });
 
+app.use("/api/search",function(request,response) {
+  /*
+    - Hot Topic (lots of votes)
+    - Controversial (overall 0% biased, passionate)
+    - Not Passionate (overall 0% biased, not passionate)
+    - Decided (overall 100% biased, both sides)
+    - One-Sided (overall 75% biased, one side only)
+    - You Decide (new articles/no votes)
+  */
+  function applyMatrix(votes,matrix) {
+    var sum = 0;
+    for ( var i = 0; i < votes.length; i++ ) {
+      for ( var j = 0; j < votes[i].length; j++ ) {
+        sum += votes[i][j] * matrix[j];
+      }
+    }
+    return sum;
+  }
+  function sortOnMatrix(items,matrix) {
+    var arr = [];
+    var keys = Object.keys(items);
+    for ( var i = 0; i < keys.length; i++ ) {
+      arr.push(items[keys[i]]);
+    }
+    return arr.sort(function(a,b) {
+      return applyMatrix(b.votes,matrix) - applyMatrix(a.votes,matrix);
+    });
+  }
+  function sortOnDualMatrix(items,matrixa,matrixb,multiplier) {
+    var arr = [];
+    var keys = Object.keys(items);
+    for ( var i = 0; i < keys.length; i++ ) {
+      arr.push(items[keys[i]]);
+      arr[i].id = items[keys[i]].id;
+    }
+    return arr.sort(function(a,b) {
+      var vala = Math.abs(applyMatrix(a.votes,matrixa) - applyMatrix(a.votes,matrixb)) * multiplier;
+      var valb = Math.abs(applyMatrix(b.votes,matrixa) - applyMatrix(b.votes,matrixb)) * multiplier;
+      return valb - vala;
+    });
+  }
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  if ( qs == "retr" ) {
+    var results = [
+      sortOnMatrix(articles,[1,1,1,1,1,1,1]).slice(0,3),
+      sortOnMatrix(articles,[4,2,1,1,1,2,4]).slice(0,3),
+      sortOnMatrix(articles,[1,2,4,6,4,2,1]).slice(0,3),
+      sortOnDualMatrix(articles,[1,1,1,0,0,0,0],[0,0,0,0,1,1,1],-1).slice(0,3),
+      sortOnDualMatrix(articles,[1,1,1,0,0,0,0],[0,0,0,0,1,1,1],1).slice(0,3),
+      sortOnMatrix(articles,[-1,-1,-1,-1,-1,-1,-1]).slice(0,3)
+    ];
+    response.writeHead(200);
+    response.write(JSON.stringify(results));
+    response.end();
+  }
+});
+
+
 app.use("/web",express.static("web"));
 
 function calculateVotes(votes,type) {
