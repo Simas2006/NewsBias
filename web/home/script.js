@@ -60,7 +60,18 @@ function renderAll() {
   }
 }
 
+function setOpinion(value) {
+  localStorage.setItem("party",value);
+  var items = ["left1","left2","left3","center","right3","right2","right1"];
+  for ( var i = 0; i < items.length; i++ ) {
+    document.getElementById(items[i]).className = "tiny";
+  }
+  document.getElementById(items[value]).className = "tiny selected";
+}
+
 window.onload = function() {
+  if ( ! localStorage.getItem("party") ) localStorage.setItem("party","3");
+  setOpinion(parseInt(localStorage.getItem("party")));
   simpleAJAX("/api/search?retr",function(data) {
     searchData = JSON.parse(data);
     renderAll();
