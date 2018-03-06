@@ -262,7 +262,9 @@ app.use("/api/search",function(request,response) {
     var keys = Object.keys(items);
     for ( var i = 0; i < keys.length; i++ ) {
       arr.push(items[keys[i]]);
-      arr[i].id = items[keys[i]].id;
+      arr[i].id = keys[i];
+      arr[i].rating = calculateVotes(arr[i].votes);
+      arr[i].comments = comments[keys[i]];
     }
     return arr.sort(function(a,b) {
       var vala = Math.abs(applyMatrix(a.votes,matrixa) - applyMatrix(a.votes,matrixb)) * multiplier;
