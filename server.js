@@ -4,7 +4,7 @@ var app = express();
 var PORT = process.argv[2] || 8000;
 var WAIT_BETWEEN_VOTES = 15 * 60 * 1000;
 var VOTE_MODIFIER = 0.25;
-var SEARCH_THRESHOLD = 0.75;
+var SEARCH_THRESHOLD = 0.66;
 var recentVotes = {};
 var articles,comments;
 
