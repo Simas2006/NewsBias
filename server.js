@@ -4,6 +4,7 @@ var app = express();
 var PORT = process.argv[2] || 8000;
 var WAIT_BETWEEN_VOTES = 15 * 60 * 1000;
 var VOTE_MODIFIER = 0.25;
+var SEARCH_THRESHOLD = 0.75;
 var recentVotes = {};
 var articles,comments;
 
@@ -262,9 +263,6 @@ app.use("/api/search",function(request,response) {
     var keys = Object.keys(items);
     for ( var i = 0; i < keys.length; i++ ) {
       arr.push(items[keys[i]]);
-      arr[i].id = keys[i];
-      arr[i].rating = calculateVotes(arr[i].votes);
-      arr[i].comments = comments[keys[i]];
     }
     return arr.sort(function(a,b) {
       var vala = Math.abs(applyMatrix(a.votes,matrixa) - applyMatrix(a.votes,matrixb)) * multiplier;
@@ -272,10 +270,18 @@ app.use("/api/search",function(request,response) {
       return valb - vala;
     });
   }
+  function calculatePoints(string,item) {
+    var points = 0;
+    for ( var j = 0; j < string.length; j++ ) {
+      if ( item.url.indexOf(string[j]) > -1 ) points++;
+      if ( item.title.indexOf(string[j]) > -1 ) points++;
+    }
+    item.points = points;
+  }
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
-  if ( qs == "retr" ) {
+  if ( qs[0] == "retr" ) {
     var results = [
       sortOnMatrix(articles,[1,1,1,1,1,1,1]).slice(0,3),
       sortOnMatrix(articles,[4,2,1,1,1,2,4]).slice(0,3),
@@ -286,6 +292,23 @@ app.use("/api/search",function(request,response) {
     ];
     response.writeHead(200);
     response.write(JSON.stringify(results));
+    response.end();
+  } else {
+    var keys = Object.keys(articles);
+    var string = qs[0].split("%20").map(item => decodeURIComponent(item));
+    var arr = [];
+    var keys = Object.keys(articles);
+    for ( var i = 0; i < keys.length; i++ ) {
+      arr.push(articles[keys[i]]);
+    }
+    var sorted = arr.sort((a,b) => {
+      calculatePoints(string,a);
+      calculatePoints(string,b);
+      return b.points - a.points;
+    });
+    sorted = sorted.filter(item => string[0] != "" && item.points / string.length >= SEARCH_THRESHOLD);
+    response.writeHead(200);
+    response.write(JSON.stringify(sorted));
     response.end();
   }
 });
