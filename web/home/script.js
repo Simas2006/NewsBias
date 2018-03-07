@@ -62,7 +62,7 @@ function renderAll() {
 
 function setOpinion(value) {
   localStorage.setItem("party",value);
-  var items = ["left1","left2","left3","center","right3","right2","right1"];
+  var items = ["left1","left2","left3","right3","right2","right1"];
   for ( var i = 0; i < items.length; i++ ) {
     document.getElementById(items[i]).className = "tiny";
   }
