@@ -290,6 +290,13 @@ app.use("/api/search",function(request,response) {
   }
 });
 
+app.use("/api/random",function(request,response) {
+  var keys = Object.keys(articles);
+  var id = Math.floor(Math.random() * keys.length);
+  response.writeHead(200);
+  response.write(`<!DOCTYPE html><html><body><script>location.href = "/web/article/index.html?${keys[id]}"</script></body></html>`);
+  response.end();
+});
 
 app.use("/web",express.static("web"));
 
