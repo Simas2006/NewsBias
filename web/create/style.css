@@ -10,6 +10,11 @@ td {
   width: 50vw;
   padding-right: 10px;
 }
+td.error {
+  border: 5px solid red;
+  background-color: #f99;
+  padding-left: 10px;
+}
 select {
   background-color: white;
   font-size: 100%;

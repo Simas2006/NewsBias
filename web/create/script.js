@@ -19,6 +19,15 @@ function setOpinion(value) {
 }
 
 function runCreate() {
+  var errorState = -1;
+  if ( document.getElementById("url").value.length < 3 ) errorState = 0;
+  else if ( document.getElementById("name").value.length < 3 ) errorState = 1;
+  else if ( document.getElementById("author").value.length < 3 ) errorState = 2;
+  if ( errorState > -1 ) {
+    document.getElementById("error").innerText = `The ${["URL","Name","Author Name"][errorState]} must be at least 3 characters.`;
+    document.getElementById("error").className = "error";
+    return;
+  }
   simpleAJAX(`/api/create?${document.getElementById("url").value},${document.getElementById("name").value},${document.getElementById("author").value}`,function(id) {
     simpleAJAX(`/api/vote?${id},${localStorage.getItem("party")},${opinion}`,function() {
       location.href = `/web/article/index.html?${id}`;
