@@ -119,6 +119,7 @@ app.use("/api/create",function(request,response) {
   articles[id] = {
     url: qs[0],
     title: qs[1],
+    author: qs[2],
     votes: [
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0],
@@ -131,7 +132,7 @@ app.use("/api/create",function(request,response) {
   comments[id] = [];
   console.log(`CREATE ${ip} ${qs[0]} ${qs[1]}`);
   response.writeHead(200);
-  response.write("ok");
+  response.write(id);
   response.end();
 });
 
@@ -164,21 +165,6 @@ app.use("/api/info",function(request,response) {
       rating: calculateVotes(articles[qs[0]].votes,"all")
     }
   }));
-  response.end();
-});
-
-app.use("/api/list",function(request,response) {
-  var url = request.url.split("?")[0];
-  var qs = request.url.split("?").slice(1).join("?").split(",");
-  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
-  var items = {};
-  var keys = Object.keys(articles);
-  for ( var i = 0; i < keys.length; i++ ) {
-    items[keys[i]] = articles[keys[i]].title;
-  }
-  console.log(`LIST ${ip}`);
-  response.writeHead(200);
-  response.write(JSON.stringify(items));
   response.end();
 });
 
@@ -311,6 +297,7 @@ app.use("/api/search",function(request,response) {
     response.write(JSON.stringify(sorted));
     response.end();
   }
+  console.log(`SEARCH ${ip} ${qs[0]}`);
 });
 
 app.use("/api/random",function(request,response) {
