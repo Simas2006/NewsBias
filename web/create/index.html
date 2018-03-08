@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>NewsBias</title>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="script.js"></script>
+</head>
+<body>
+  <table>
+    <tr>
+      <td>URL:</td>
+      <td>Name:</td>
+    </tr>
+    <tr>
+      <td>
+        <input type="text" id="url" />
+      </td>
+      <td>
+        <input type="text" id="name" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <hr />
+      </td>
+    </tr>
+    <tr>
+      <td>Opinion:</td>
+      <td>Author:</td>
+    </tr>
+    <tr>
+      <td>
+        <button onclick="setOpinion(0)" id="left1" class="tiny">&lt;</button>
+        <button onclick="setOpinion(1)" id="left2" class="tiny">&lt;</button>
+        <button onclick="setOpinion(2)" id="left3" class="tiny">&lt;</button>
+        <button onclick="setOpinion(3)" id="center" class="tiny">&#9473;</button>
+        <button onclick="setOpinion(4)" id="right3" class="tiny">&gt;</button>
+        <button onclick="setOpinion(5)" id="right2" class="tiny">&gt;</button>
+        <button onclick="setOpinion(6)" id="right1" class="tiny">&gt;</button>
+      </td>
+      <td>
+        <input type="text" id="author" size="50" />
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <hr />
+      </td>
+    </tr>
+    <tr>
+      <td>Remind me...</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
+        <select onchange="setRemindTime()">
+          <option value="0">Never</option>
+          <option value="1">In 1 Day</option>
+          <option value="2">In 1 Week</option>
+          <option value="3">In 4 Weeks</option>
+          <option value="4">In 3 Months</option>
+        </select>
+      </td>
+      <td>
+        <button onclick="runCreate()" class="rectangle">Create</button>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
