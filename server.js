@@ -117,9 +117,11 @@ app.use("/api/create",function(request,response) {
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
   var id = Math.floor(Math.random() * 10e5).toString();
   articles[id] = {
+    id: id,
     url: qs[0],
     title: qs[1],
     author: qs[2],
+    comments: [],
     votes: [
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0],
@@ -239,6 +241,7 @@ app.use("/api/search",function(request,response) {
     var keys = Object.keys(items);
     for ( var i = 0; i < keys.length; i++ ) {
       arr.push(items[keys[i]]);
+      arr[i].rating = calculateVotes(arr[i].votes);
     }
     return arr.sort(function(a,b) {
       return applyMatrix(b.votes,matrix) - applyMatrix(a.votes,matrix);
@@ -249,6 +252,7 @@ app.use("/api/search",function(request,response) {
     var keys = Object.keys(items);
     for ( var i = 0; i < keys.length; i++ ) {
       arr.push(items[keys[i]]);
+      arr[i].rating = calculateVotes(arr[i].votes);
     }
     return arr.sort(function(a,b) {
       var vala = Math.abs(applyMatrix(a.votes,matrixa) - applyMatrix(a.votes,matrixb)) * multiplier;
