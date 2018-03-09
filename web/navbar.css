@@ -1,0 +1,37 @@
+#navbar {
+  background-color: #333;
+  vertical-align: center;
+  width: calc(100vw - 20px);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.navbar-item {
+  color: white;
+  padding: 10px;
+  vertical-align: center;
+  cursor: pointer;
+}
+.navbar-item-small {
+  width: 10vw;
+}
+.navbar-item-large {
+  width: 70vw;
+}
+.navbar-center {
+  text-align: center;
+}
+.navbar-item > span {
+  color: white;
+}
+.navbar-item:not(.navbar-item-large):hover {
+  background-color: #111;
+}
+.navbar-search {
+  height: 2vh;
+  width: 100%;
+}
+.navbar-right {
+  display: inline-block;
+  text-align: right;
+  width: 20px;
+}
