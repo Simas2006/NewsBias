@@ -10,6 +10,7 @@ p {
 a {
   font-weight: bold;
   text-decoration: none;
+  color: blue;
 }
 textarea {
   border: 0px;

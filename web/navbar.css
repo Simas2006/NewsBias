@@ -9,13 +9,13 @@
   color: white;
   padding: 10px;
   vertical-align: center;
-  cursor: pointer;
 }
 .navbar-item-small {
-  width: 10vw;
+  width: 5vw;
+  cursor: pointer;
 }
 .navbar-item-large {
-  width: 70vw;
+  width: 85vw;
 }
 .navbar-center {
   text-align: center;
@@ -23,7 +23,7 @@
 .navbar-item > span {
   color: white;
 }
-.navbar-item:not(.navbar-item-large):hover {
+.navbar-item-small:hover {
   background-color: #111;
 }
 .navbar-search {
