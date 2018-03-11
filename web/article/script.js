@@ -247,6 +247,7 @@ window.onload = function() {
   simpleAJAX(`/api/info${location.search}`,function(result) {
     data = JSON.parse(result);
     renderAll();
+    renderNavbar();
     setCommentType(1);
   });
 }

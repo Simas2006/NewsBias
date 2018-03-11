@@ -55,5 +55,6 @@ window.onload = function() {
   simpleAJAX(`/api/search${location.search}`,function(data) {
     searchData = JSON.parse(data);
     renderAll();
+    renderNavbar();
   });
 }

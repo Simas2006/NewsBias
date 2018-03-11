@@ -36,5 +36,6 @@ function runCreate() {
 }
 
 window.onload = function() {
+  renderNavbar();
   setOpinion(3);
 }
