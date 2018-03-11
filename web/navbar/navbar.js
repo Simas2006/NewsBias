@@ -3,6 +3,7 @@ function renderNavbar() {
   var row = document.createElement("tr");
   var col1 = document.createElement("td");
   col1.className = "navbar-item navbar-item-small aligncenter";
+  col1.onclick = _ => location.href = "/web/home/index.html";
   var span = document.createElement("span");
   span.innerText = "NewsBias";
   col1.appendChild(span);
@@ -21,12 +22,14 @@ function renderNavbar() {
   row.appendChild(col2);
   var col3 = document.createElement("td");
   col3.className = "navbar-item navbar-item-small aligncenter";
+  col3.onclick = _ => location.href = "/web/home/remind/index.html";
   var span = document.createElement("span");
   span.innerHTML = "&#x1f514;";
   col3.appendChild(span);
   row.appendChild(col3);
   var col4 = document.createElement("td");
   col4.className = "navbar-item navbar-item-small aligncenter";
+  col4.onclick = _ => location.href = "/web/create/index.html";
   var span = document.createElement("span");
   span.innerHTML = "+";
   col4.appendChild(span);

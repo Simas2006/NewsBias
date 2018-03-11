@@ -5,6 +5,11 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
+#navbar-search {
+  height: 2vh;
+  width: 100%;
+  font-size: 75%;
+}
 .navbar-item {
   color: white;
   padding: 10px;
@@ -30,8 +35,4 @@
   display: inline-block;
   text-align: right;
   width: 20px;
-}
-#navbar-search {
-  height: 2vh;
-  width: 100%;
 }
