@@ -75,5 +75,6 @@ window.onload = function() {
   simpleAJAX("/api/search?retr",function(data) {
     searchData = JSON.parse(data);
     renderAll();
+    renderNavbar();
   });
 }
