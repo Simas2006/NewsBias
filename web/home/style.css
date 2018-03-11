@@ -14,6 +14,7 @@ a {
 }
 textarea {
   border: 0px;
+  overflow: hidden;
   resize: none;
   color: black;
   font-size: 75%;
