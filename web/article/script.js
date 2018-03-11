@@ -82,7 +82,7 @@ function renderAll() {
       var selected = data.comments.filter(item => item.votes > 0 && item.opinion == chain[i].opinion).sort((a,b) => b.votes - a.votes);
       if ( selected[0] && selected[0].id == chain[i].id ) {
         var star = document.createElement("img");
-        star.src = "/web/star.png";
+        star.src = "/web/article/star.png";
         star.width = "30";
         star.height = "30";
         comment.appendChild(star);
