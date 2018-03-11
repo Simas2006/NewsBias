@@ -10,7 +10,7 @@ function simpleAJAX(url,callback) {
 }
 
 function renderAll() {
-  document.getElementById("title").innerText = `${searchData.length} results for "${decodeURIComponent(location.search.slice(1))}"`;
+  document.getElementById("title").innerText = `${searchData.length} result${searchData.length != 1 ? "s": ""} for "${decodeURIComponent(location.search.slice(1))}"`;
   var table = document.getElementById("results");
   for ( var i = 0; i < searchData.length; i++ ) {
     var row = document.createElement("tr");
