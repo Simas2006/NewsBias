@@ -155,6 +155,7 @@ app.use("/api/info",function(request,response) {
     id: articles[qs[0]].id,
     url: articles[qs[0]].url,
     title: articles[qs[0]].title,
+    author: articles[qs[0]].author,
     comments: comments[qs[0]],
     votes: {
       left: {
