@@ -24,6 +24,12 @@ td {
   width: 33vw;
   text-align: left;
 }
+td.remind-small {
+  width: 30vw;
+}
+td.remind-large {
+  width: 70vw;
+}
 td:not(.aligncenter) {
   vertical-align: top;
 }
