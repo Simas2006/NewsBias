@@ -1,6 +1,9 @@
 var data;
 var commentType;
-var dialogSelected;
+var commentDialogSelected;
+var reminders;
+var hasActiveReminder;
+var reminderDialogActive = false;
 
 function simpleAJAX(url,callback) {
   var req = new XMLHttpRequest();
@@ -43,18 +46,18 @@ function renderAll() {
       options.className = "tiny wide";
       options.setAttribute("comment_id",chain[i].id);
       options.onclick = function() {
-        var dropdown = document.getElementById("dropdown");
-        if ( dialogSelected != this.getAttribute("comment_id") ) {
+        var dropdown = document.getElementById("commentDropdown");
+        if ( commentDialogSelected != this.getAttribute("comment_id") ) {
           var position = this.getBoundingClientRect();
           var bodyPosition = document.body.getBoundingClientRect();
           dropdown.style.position = "absolute";
           dropdown.style.left = (position.left - bodyPosition.left + position.width * 0.5) + "px";
           dropdown.style.top = (position.top - bodyPosition.top + position.height * 0.5) + "px";
           dropdown.style.display = "block";
-          dialogSelected = this.getAttribute("comment_id");
+          commentDialogSelected = this.getAttribute("comment_id");
         } else {
           dropdown.style.display = "none";
-          dialogSelected = null;
+          commentDialogSelected = null;
         }
       }
       votes.appendChild(options);
@@ -196,6 +199,7 @@ function renderAll() {
   }
   document.getElementById("link").href = data.url;
   document.getElementById("link").innerText = data.title;
+  document.getElementById("author").innerText = `By ${data.author}`;
 }
 
 function runVote(type) {
@@ -237,17 +241,51 @@ function setCommentType(type) {
   commentType = type;
 }
 
-function dropdownOperation(type) {
-  if ( type == 0 ) {
+function commentDropdownOperation(type) {
 
+}
+
+function reminderDropdownOperation(type) {
+  var days = [1,3,7,14,30];
+  if ( type > 0 ) {
+    var val = new Date().getTime() + days[type - 1] * 86400;
+    reminders.push([location.search.slice(1),val]);
+    localStorage.setItem("reminders",reminders.map(item => item.join(":")).join(","));
+    document.getElementById("reminderButton").innerHTML = "&#x1f514";
+  }
+  toggleReminderDropdown();
+}
+
+function toggleReminderDropdown(button) {
+  if ( hasActiveReminder ) {
+    reminders = reminders.filter(item => item[0] != location.search.slice(1));
+    localStorage.setItem("reminders",reminders.map(item => item.join(":")).join(","));
+    hasActiveReminder = false;
+    document.getElementById("reminderButton").innerHTML = "&#x1f515";
+  } else {
+    var dropdown = document.getElementById("reminderDropdown");
+    if ( ! reminderDialogActive ) {
+      var position = button.getBoundingClientRect();
+      var bodyPosition = document.body.getBoundingClientRect();
+      dropdown.style.position = "absolute";
+      dropdown.style.left = (position.left - bodyPosition.left + position.width * 0.5) + "px";
+      dropdown.style.top = (position.top - bodyPosition.top + position.height * 0.5) + "px";
+      dropdown.style.display = "block";
+    } else {
+      dropdown.style.display = "none";
+    }
+    reminderDialogActive = ! reminderDialogActive;
   }
 }
 
 window.onload = function() {
-  var reminders = localStorage.getItem("reminders").split(",").map(item => item.split(":"));
-  reminders = reminders.filter(item => item[0] != location.search.slice(1));
-  reminders = reminders.map(item => item.join(":")).join(",");
-  localStorage.setItem("reminders",reminders);
+  reminders = localStorage.getItem("reminders").split(",").map(item => item.split(":"));
+  hasActiveReminder = reminders.filter(item => item[0] == location.search.slice(1)).length > 0;
+  reminders = reminders.filter(item => parseInt(item[1]) >= new Date().getTime() || item[0] != location.search.slice(1));
+  localStorage.setItem("reminders",reminders.map(item => item.join(":")).join(","));
+  if ( hasActiveReminder ) {
+    document.getElementById("reminderButton").innerHTML = "&#x1f514";
+  }
   simpleAJAX(`/api/info${location.search}`,function(result) {
     data = JSON.parse(result);
     renderAll();

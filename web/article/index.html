@@ -29,6 +29,8 @@
       </td>
       <td>
         <h1 id="complete"></h1>
+        <span id="author"></span>
+        <button id="reminderButton" onclick="toggleReminderDropdown(this)" class="tiny">&#x1f515;</button>
       </td>
       <td>
         <h1 class="right">
@@ -103,10 +105,18 @@
       </td>
     </tr>
   </table>
-  <div id="dropdown">
-    <button class="rectangle" onclick="dropdownOperation(0)">Reply</button>
-    <button class="rectangle">Report</button>
-    <button class="rectangle">Remove</button>
+  <div id="commentDropdown" class="dropdown">
+    <button class="rectangle" onclick="commentDropdownOperation(0)">Reply</button>
+    <button class="rectangle" onclick="commentDropdownOperation(1)">Report</button>
+    <button class="rectangle" onclick="commentDropdownOperation(2)">Remove</button>
+  </div>
+  <div id="reminderDropdown" class="dropdown">
+    <button class="rectangle" onclick="reminderDropdownOperation(0)">Off</button>
+    <button class="rectangle" onclick="reminderDropdownOperation(1)">In 1 Day</button>
+    <button class="rectangle" onclick="reminderDropdownOperation(2)">In 3 Days</button>
+    <button class="rectangle" onclick="reminderDropdownOperation(3)">In 1 Week</button>
+    <button class="rectangle" onclick="reminderDropdownOperation(4)">In 2 Weeks</button>
+    <button class="rectangle" onclick="reminderDropdownOperation(5)">In 1 Month</button>
   </div>
 </body>
 </html>

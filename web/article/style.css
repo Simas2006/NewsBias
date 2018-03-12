@@ -117,7 +117,7 @@ td.right.fade {
   border: 5px solid red;
   background-color: #f99;
 }
-#dropdown {
+.dropdown {
   background-color: white;
   width: 150px;
   border: 1px solid black;
@@ -125,13 +125,16 @@ td.right.fade {
   padding-bottom: 10px;
   display: none;
 }
-#dropdown > button {
+.dropdown > button {
   background-color: #eee;
   width: 100%;
   padding: 0px;
   padding-left: 10px;
   text-align: left;
 }
-#dropdown > button:hover {
+.dropdown > button:hover {
   background-color: #ccc;
+}
+#author {
+  color: #999;
 }
