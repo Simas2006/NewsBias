@@ -244,6 +244,10 @@ function dropdownOperation(type) {
 }
 
 window.onload = function() {
+  var reminders = localStorage.getItem("reminders").split(",").map(item => item.split(":"));
+  reminders = reminders.filter(item => item[0] != location.search.slice(1));
+  reminders = reminders.map(item => item.join(":")).join(",");
+  localStorage.setItem("reminders",reminders);
   simpleAJAX(`/api/info${location.search}`,function(result) {
     data = JSON.parse(result);
     renderAll();
