@@ -121,7 +121,6 @@ app.use("/api/create",function(request,response) {
     url: qs[0],
     title: qs[1],
     author: qs[2],
-    comments: [],
     votes: [
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0],
@@ -166,7 +165,7 @@ app.use("/api/info",function(request,response) {
         sum: arrSum(articles[qs[0]].votes.slice(3)),
         rating: calculateVotes(articles[qs[0]].votes.slice(3),"right")
       },
-      rating: calculateVotes(articles[qs[0]].votes,"all")
+      rating: calculateVotes(articles[qs[0]].votes)
     }
   }));
   response.end();
@@ -243,10 +242,18 @@ app.use("/api/search",function(request,response) {
     var keys = Object.keys(items);
     for ( var i = 0; i < keys.length; i++ ) {
       arr.push(items[keys[i]]);
-      arr[i].rating = calculateVotes(arr[i].votes);
     }
     return arr.sort(function(a,b) {
       return applyMatrix(b.votes,matrix) - applyMatrix(a.votes,matrix);
+    }).map(function(item) {
+      return {
+        id: item.id,
+        url: item.url,
+        title: item.title,
+        author: item.author,
+        comments: comments[item.id],
+        rating: calculateVotes(item.votes)
+      }
     });
   }
   function sortOnDualMatrix(items,matrixa,matrixb,multiplier) {
@@ -254,12 +261,20 @@ app.use("/api/search",function(request,response) {
     var keys = Object.keys(items);
     for ( var i = 0; i < keys.length; i++ ) {
       arr.push(items[keys[i]]);
-      arr[i].rating = calculateVotes(arr[i].votes);
     }
     return arr.sort(function(a,b) {
       var vala = Math.abs(applyMatrix(a.votes,matrixa) - applyMatrix(a.votes,matrixb)) * multiplier;
       var valb = Math.abs(applyMatrix(b.votes,matrixa) - applyMatrix(b.votes,matrixb)) * multiplier;
       return valb - vala;
+    }).map(function(item) {
+      return {
+        id: item.id,
+        url: item.url,
+        title: item.title,
+        author: item.author,
+        comments: comments[item.id],
+        rating: calculateVotes(item.votes)
+      }
     });
   }
   function calculatePoints(string,item) {
@@ -298,7 +313,16 @@ app.use("/api/search",function(request,response) {
       calculatePoints(string,b);
       return b.points - a.points;
     });
-    sorted = sorted.filter(item => string[0] != "" && item.points / string.length >= SEARCH_THRESHOLD);
+    sorted = sorted.filter(item => string[0] != "" && item.points / string.length >= SEARCH_THRESHOLD).map(function(item) {
+      return {
+        id: item.id,
+        url: item.url,
+        title: item.title,
+        author: item.author,
+        comments: comments[item.id],
+        rating: calculateVotes(item.votes)
+      }
+    });
     response.writeHead(200);
     response.write(JSON.stringify(sorted));
     response.end();
@@ -316,7 +340,7 @@ app.use("/api/random",function(request,response) {
 
 app.use("/web",express.static("web"));
 
-function calculateVotes(votes,type) {
+function calculateVotes(votes) {
   var matrix = [
     [-1, 0, 1,-1, 1, 0,-1],
     [ 0,-1, 0, 0, 0,-1, 0],
