@@ -152,6 +152,7 @@ app.use("/api/info",function(request,response) {
   console.log(`INFO ${ip} ${qs[0]}`);
   response.writeHead(200);
   response.write(JSON.stringify({
+    id: articles[qs[0]].id,
     url: articles[qs[0]].url,
     title: articles[qs[0]].title,
     comments: comments[qs[0]],
