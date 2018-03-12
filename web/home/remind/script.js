@@ -65,8 +65,13 @@ window.onload = function() {
   }
   var list = localStorage.getItem("reminders").split(",").map(item => item.split(":"));
   list = list.filter(item => parseInt(item[1]) < new Date().getTime());
-  getItems(function() {
-    renderAll();
+  if ( list.length > 0 ) {
+    getItems(function() {
+      renderAll();
+      renderNavbar();
+    });
+  } else {
+    document.getElementById("error").innerText = "You have no triggered reminders right now.";
     renderNavbar();
-  });
+  }
 }
