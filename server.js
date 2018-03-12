@@ -175,7 +175,6 @@ app.post("/api/comment",function(request,response) {
   function searchTree(chain,id,name,opinion,comment) {
     if ( chain.length == 0 ) return false;
     for ( var i = 0; i < chain.length; i++ ) {
-      console.log(chain[i].id,id);
       if ( chain[i].id == id ) {
         chain[i].replies.push({
           id: Math.floor(Math.random() * 10e6),
@@ -283,7 +282,7 @@ app.use("/api/search",function(request,response) {
       if ( item.url.indexOf(string[j]) > -1 ) points++;
       if ( item.title.indexOf(string[j]) > -1 ) points++;
     }
-    item.points = points;
+    return points / string.length;
   }
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
@@ -309,11 +308,11 @@ app.use("/api/search",function(request,response) {
       arr.push(articles[keys[i]]);
     }
     var sorted = arr.sort((a,b) => {
-      calculatePoints(string,a);
-      calculatePoints(string,b);
-      return b.points - a.points;
+      var pointsa = calculatePoints(string,a);
+      var pointsb = calculatePoints(string,b);
+      return pointsb - pointsa;
     });
-    sorted = sorted.filter(item => string[0] != "" && item.points / string.length >= SEARCH_THRESHOLD).map(function(item) {
+    sorted = sorted.filter(item => string[0] != "" && calculatePoints(string,item) >= SEARCH_THRESHOLD).map(function(item) {
       return {
         id: item.id,
         url: item.url,
