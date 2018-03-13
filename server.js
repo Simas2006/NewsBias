@@ -339,6 +339,12 @@ app.use("/api/random",function(request,response) {
 
 app.use("/web",express.static("web"));
 
+app.get("/",function(request,response) {
+  response.writeHead(200);
+  response.write(`<!DOCTYPE html><html><body><script>location.href = "/web/home/index.html"</script></body></html>`);
+  response.end();
+});
+
 function calculateVotes(votes) {
   var matrix = [
     [-1, 0, 1,-1, 1, 0,-1],
