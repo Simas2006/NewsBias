@@ -1,6 +1,6 @@
 ## Reading Vote Statistics
 
---- | X Axis                | Y Axis
+Key | X Axis                | Y Axis
 --- | --------------------- | ---------------------
 <S  | Strongly Voting Left  | Strongly Left Aligned
 <M  | Normally Voting Left  | Normally Left Aligned
