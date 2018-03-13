@@ -58,6 +58,16 @@ function renderAll() {
       element.appendChild(document.createElement("br"));
     }
   }
+  var text = ["bronze","silver","ruby","gold","emerald","diamond"];
+  var points = parseInt(localStorage.getItem("points")[0]);
+  var awards = document.getElementById("awards");
+  for ( var i = 0; i < points; i++ ) {
+    var button = document.createElement("button");
+    button.id = text[i] + "-award";
+    button.className = "tiny";
+    button.innerText = text[i].charAt(0).toUpperCase();
+    awards.appendChild(button);
+  }
 }
 
 function setOpinion(value) {
