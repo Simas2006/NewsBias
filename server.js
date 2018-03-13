@@ -320,10 +320,24 @@ app.use("/api/search",function(request,response) {
 });
 
 app.use("/api/random",function(request,response) {
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
   var keys = Object.keys(articles);
   var id = Math.floor(Math.random() * keys.length);
   response.writeHead(200);
   response.write(`<!DOCTYPE html><html><body><script>location.href = "/web/article/index.html?${keys[id]}"</script></body></html>`);
+  response.end();
+});
+
+app.use("/api/stats",function(request,response) {
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  response.writeHead(200);
+  var text = JSON.stringify(articles[qs[0]].votes);
+  if ( qs[1] == "csv" ) text = articles[qs[0]].votes.map(item => item.join(",")).join("\n");
+  response.write(text);
   response.end();
 });
 
