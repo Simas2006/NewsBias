@@ -105,4 +105,11 @@ function renderBarGraphic(element,rating) {
   var ctx = canvas.getContext("2d");
   var frameCount = 0;
   var graphicInterval = setInterval(animateFrame,25);
- }
+}
+
+function incrementAwardPoints(val) {
+  if ( ! localStorage.getItem("points") ) localStorage.setItem("points","0:0");
+  var points = localStorage.getItem("points").split(":");
+  points[1] = parseInt(points[1]) + val;
+  localStorage.setItem("points",points.join(":"));
+}
