@@ -56,6 +56,7 @@ window.onload = function() {
     searchData = JSON.parse(data);
     renderAll();
     renderNavbar();
+    incrementAwardPoints(0.1);
     document.getElementById("navbar-search").value = decodeURIComponent(location.search.slice(1));
   });
 }

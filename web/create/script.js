@@ -30,6 +30,7 @@ function runCreate() {
   }
   simpleAJAX(`/api/create?${document.getElementById("url").value},${document.getElementById("name").value},${document.getElementById("author").value}`,function(id) {
     simpleAJAX(`/api/vote?${id},${localStorage.getItem("party")},${opinion}`,function() {
+      incrementAwardPoints(4);
       location.href = `/web/article/index.html?${id}`;
     });
   });

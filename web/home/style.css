@@ -128,3 +128,24 @@ button#center {
 #screen6 > textarea {
   background-color: #f9f;
 }
+#awards {
+  text-align: center;
+}
+#bronze-award {
+  background-color: #cd7f32;
+}
+#silver-award {
+  background-color: silver;
+}
+#ruby-award {
+  background-color: #e0115f;
+}
+#gold-award {
+  background-color: gold;
+}
+#emerald-award {
+  background-color: #00ff00;
+}
+#diamond-award {
+  background-color: #1ff6ff;
+}

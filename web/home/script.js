@@ -69,6 +69,11 @@ function setOpinion(value) {
   document.getElementById(items[value]).className = "tiny selected";
 }
 
+function openRandomPage() {
+  incrementAwardPoints(2);
+  location.href = "/api/random";
+}
+
 window.onload = function() {
   if ( localStorage.getItem("party") ) setOpinion(parseInt(localStorage.getItem("party")));
   simpleAJAX("/api/search?retr",function(data) {

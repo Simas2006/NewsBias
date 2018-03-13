@@ -231,6 +231,7 @@ function runVote(type) {
         renderAll();
         if ( type < 3 ) setCommentType(0);
         if ( type > 3 ) setCommentType(2);
+        incrementAwardPoints(1);
       });
     });
   } else {
@@ -249,6 +250,7 @@ function runComment(text,replyId,id) {
     simpleAJAX(`/api/info${location.search}`,function(result) {
       data = JSON.parse(result);
       renderAll();
+      incrementAwardPoints(3);
       if ( id == "comment" ) {
         document.getElementById("comment").value = "";
       }
