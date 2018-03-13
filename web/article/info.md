@@ -19,8 +19,8 @@ f.rating  | rating / 100                      |
 low byte  | 255 * f                           |
 high byte | 255                               |
 color     | rgb(low byte,low byte,high byte)  | rating < 0
-color     | rgb(high byte,low byte,low byte ) | rating > 0
-color     | rgb(low byte,low byte,low byte )  | rating = 0
+color     | rgb(high byte,low byte,low byte) | rating > 0
+color     | rgb(low byte,low byte,low byte)  | rating = 0
 
 ### Download
 
