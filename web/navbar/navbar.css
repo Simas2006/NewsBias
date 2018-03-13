@@ -43,3 +43,15 @@ div.big-graphic > canvas {
   text-align: right;
   width: 20px;
 }
+.navbar-badge {
+  position: absolute;
+  display: none;
+  background-color: red;
+  color: white;
+  padding-left: 6px;
+  padding-right: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-radius: 50%;
+  font-size: 75%;
+}

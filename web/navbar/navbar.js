@@ -35,6 +35,20 @@ function renderNavbar() {
   col4.appendChild(span);
   row.appendChild(col4);
   navbar.appendChild(row);
+  if ( ! localStorage.getItem("reminders") ) localStorage.setItem("reminders","");
+  var reminders = localStorage.getItem("reminders").split(",").map(item => item.split(":"));
+  reminders = reminders.filter(item => parseInt(item[1]) < new Date().getTime());
+  if ( reminders.length > 0 ) {
+    var badge = document.createElement("p");
+    badge.className = "navbar-badge";
+    document.body.appendChild(badge);
+    var position = col3.getBoundingClientRect();
+    var bodyPosition = document.body.getBoundingClientRect();
+    badge.style.left = (position.left - bodyPosition.left + position.width * 0.55) + "px";
+    badge.style.top = (position.top - bodyPosition.top - position.height * 0.05) + "px";
+    badge.innerText = reminders.length;
+    badge.style.display = "block";
+  }
 }
 
 function renderBarGraphic(element,rating) {
