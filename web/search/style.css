@@ -14,9 +14,11 @@ textarea {
 }
 td {
   width: 30vw;
+  text-align: center;
 }
 td.wide {
   width: 70vw !important;
+  text-align: left !important;
 }
 .left {
   color: blue;

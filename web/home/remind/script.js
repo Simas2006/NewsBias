@@ -15,7 +15,7 @@ function renderAll() {
     var row = document.createElement("tr");
     var graphic = document.createElement("td");
     graphic.className = "remind-small";
-    // draw graphic
+    renderBarGraphic(graphic,data[i].votes.rating);
     row.appendChild(graphic);
     var col = document.createElement("td");
     var title = document.createElement("a");

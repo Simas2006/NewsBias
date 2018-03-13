@@ -15,7 +15,7 @@ function renderAll() {
   for ( var i = 0; i < searchData.length; i++ ) {
     var row = document.createElement("tr");
     var graphic = document.createElement("td");
-    // draw graphic
+    renderBarGraphic(graphic,searchData[i].rating);
     row.appendChild(graphic);
     var col = document.createElement("td");
     var title = document.createElement("a");
