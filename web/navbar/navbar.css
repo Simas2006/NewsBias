@@ -2,6 +2,9 @@ canvas {
   border: 0px;
   width: 50%;
 }
+div.big-graphic > canvas {
+  width: 100% !important;
+}
 #navbar {
   background-color: #333;
   vertical-align: center;
