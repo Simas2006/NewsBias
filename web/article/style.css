@@ -138,3 +138,12 @@ td.right.fade {
 #author {
   color: #999;
 }
+#votetable,#votetable > tr > td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+#votetable > tr > td {
+  width: 3vw;
+  height: 5vw;
+  vertical-align: middle;
+}

@@ -187,6 +187,37 @@ function renderAll() {
       this.rows = this.value.split("\n").length;
     }
   }
+  var table = document.getElementById("votetable");
+  while ( table.firstChild ) {
+    table.removeChild(table.firstChild);
+  }
+  var row = document.createElement("tr");
+  var titles = ["","<S","<M","<W","<C>","W>","M>","S>"]
+  var colors = ["white","blue","#4c4cff","#9999ff","white","#ff9999","#ff4c4c","red"];
+  for ( var i = 0; i < titles.length; i++ ) {
+    var col = document.createElement("td");
+    col.innerText = titles[i];
+    col.style.backgroundColor = colors[i];
+    row.appendChild(col);
+  }
+  table.appendChild(row);
+  for ( var i = 0; i < data.votes.matrix.length; i++ ) {
+    var row = document.createElement("tr");
+    var col = document.createElement("td");
+    col.innerText = titles[i + 1 + (i > 2 ? 1 : 0)];
+    col.style.backgroundColor = colors[i + 1 + (i > 2 ? 1 : 0)];
+    row.appendChild(col);
+    for ( var j = 0; j < data.votes.matrix[i].length; j++ ) {
+      var col = document.createElement("td");
+      col.innerText = data.votes.matrix[i][j] + "%";
+      var lbyte = Math.round(255 - 255 * (data.votes.matrix[i][j] / 100));
+      if ( j < 3 ) col.style.backgroundColor = `rgb(${lbyte},${lbyte},255)`;
+      else if ( j > 3 ) col.style.backgroundColor = `rgb(255,${lbyte},${lbyte})`;
+      else col.style.backgroundColor = `rgb(${lbyte},${lbyte},${lbyte})`
+      row.appendChild(col);
+    }
+    table.appendChild(row);
+  }
   document.getElementById("link").href = data.url;
   document.getElementById("link").innerText = data.title;
   document.getElementById("author").innerText = `By ${data.author}`;
