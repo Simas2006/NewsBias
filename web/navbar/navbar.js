@@ -71,6 +71,10 @@ function renderBarGraphic(element,rating) {
     ctx.moveTo(canvas.width / 2,canvas.height / 2);
     ctx.lineTo(xval,yval);
     ctx.stroke();
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2,canvas.height / 2,15,0,2 * Math.PI);
+    ctx.fill();
     ctx.fillStyle = ["blue","black","red"][Math.sign(rating) + 1];
     ctx.textAlign = "center";
     ctx.font = "80px Arial";
