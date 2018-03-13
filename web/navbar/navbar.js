@@ -82,6 +82,9 @@ function renderBarGraphic(element,rating) {
     frameCount++;
     if ( frameCount > 100 ) clearInterval(graphicInterval);
   }
+  while ( element.firstChild ) {
+    element.removeChild(element.firstChild);
+  }
   var canvas = document.createElement("canvas");
   canvas.height = canvas.width;
   element.appendChild(canvas);
