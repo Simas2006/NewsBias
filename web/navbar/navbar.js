@@ -80,7 +80,7 @@ function renderBarGraphic(element,rating) {
     ctx.font = "80px Arial";
     ctx.fillText(activeCount + "%",canvas.width / 2,canvas.height * 0.75);
     frameCount++;
-    if ( frameCount >= 100 ) clearInterval(graphicInterval);
+    if ( frameCount > 100 ) clearInterval(graphicInterval);
   }
   var canvas = document.createElement("canvas");
   canvas.height = canvas.width;

@@ -174,6 +174,7 @@ function renderAll() {
   renderTopComment(0);
   renderTopComment(1);
   renderTopComment(2);
+  renderBarGraphic(document.getElementById("graphic"),data.votes.rating);
   var commentBoxes = document.getElementsByTagName("textarea");
   for ( var i = 0; i < commentBoxes.length; i++ ) {
     commentBoxes[i].onfocus = function() {
@@ -280,7 +281,6 @@ window.onload = function() {
     data = JSON.parse(result);
     renderAll();
     renderNavbar();
-    renderBarGraphic(document.getElementById("graphic"),data.votes.rating);
     setCommentType(1);
   });
 }

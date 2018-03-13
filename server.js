@@ -156,17 +156,7 @@ app.use("/api/info",function(request,response) {
     title: articles[qs[0]].title,
     author: articles[qs[0]].author,
     comments: comments[qs[0]],
-    votes: {
-      left: {
-        sum: arrSum(articles[qs[0]].votes.slice(0,3)),
-        rating: calculateVotes(articles[qs[0]].votes.slice(0,3),"left")
-      },
-      right: {
-        sum: arrSum(articles[qs[0]].votes.slice(3)),
-        rating: calculateVotes(articles[qs[0]].votes.slice(3),"right")
-      },
-      rating: calculateVotes(articles[qs[0]].votes)
-    }
+    votes: calculateVotes(articles[qs[0]].votes,true)
   }));
   response.end();
 });
@@ -221,10 +211,10 @@ app.post("/api/comment",function(request,response) {
 app.use("/api/search",function(request,response) {
   /*
     - Hot Topic (lots of votes)
-    - Controversial (overall 0% biased, passionate)
-    - Not Passionate (overall 0% biased, not passionate)
-    - Decided (overall 100% biased, both sides)
-    - One-Sided (overall 75% biased, one side only)
+    - Controversial (overall 0% biased,passionate)
+    - Not Passionate (overall 0% biased,not passionate)
+    - Decided (overall 100% biased,both sides)
+    - One-Sided (overall 75% biased,one side only)
     - You Decide (new articles/no votes)
   */
   function applyMatrix(votes,matrix) {
@@ -345,35 +335,42 @@ app.get("/",function(request,response) {
   response.end();
 });
 
-function calculateVotes(votes) {
+function calculateVotes(votes,full) {
   var matrix = [
-    [-1, 0, 1,-1, 1, 0,-1],
-    [ 0,-1, 0, 0, 0,-1, 0],
-    [ 1, 0,-1, 1,-1, 0, 1],
-    [ 1, 0,-1, 1,-1, 0, 1],
-    [ 0,-1, 0, 0, 0,-1, 0],
-    [-1, 0, 1,-1, 1, 0,-1]
-  ];
+    [1,2,3,3,3,2,1],
+    [2,1,2,2,2,1,2],
+    [3,2,1,1,1,2,3],
+    [3,2,1,1,1,2,3],
+    [2,1,2,2,2,1,2],
+    [1,2,3,3,3,2,1]
+  ]
   var left = 0;
   var right = 0;
   var middle = 0;
   for ( var i = 0; i < votes.length; i++ ) {
     for ( var j = 0; j < votes[i].length; j++ ) {
-      var val = votes[i][j] + votes[i][j] * matrix[i][j] * VOTE_MODIFIER;
-      if ( j < 3 ) left += val * (j + 1);
-      else if ( j > 3 ) right += val * (j - 3);
+      var val = votes[i][j] * matrix[i][j];
+      if ( j < 3 ) left += val;
+      else if ( j > 3 ) right += val;
       else middle += val;
     }
   }
-  var rating = right - left;
-  if ( rating > 0 ) {
-    if ( rating - middle < 0 ) rating = 0;
-    else rating -= middle;
-  } else if ( rating < 0 ) {
-    if ( rating + middle > 0 ) rating = 0;
-    else rating += middle;
+  var result = 0;
+  if ( left > right ) result = Math.round(left / (left + right + middle) * 100) * -1;
+  else if ( right > left ) result = Math.round(right / (left + right + middle) * 100);
+  if ( ! full ) return result;
+  var copy = [];
+  var sum = arrSum(votes);
+  for ( var i = 0; i < votes.length; i++ ) {
+    copy.push([]);
+    for ( var j = 0; j < votes[i].length; j++ ) {
+      copy[i].push(Math.round(votes[i][j] / sum * 100));
+    }
   }
-  return rating;
+  return {
+    rating: result,
+    matrix: copy
+  }
 }
 
 function arrSum(arr) {
