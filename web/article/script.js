@@ -224,14 +224,18 @@ function renderAll() {
 }
 
 function runVote(type) {
-  simpleAJAX(`/api/vote${location.search},${localStorage.getItem("party")},${type}`,function() {
-    simpleAJAX(`/api/info${location.search}`,function(result) {
-      data = JSON.parse(result);
-      renderAll();
-      if ( type < 3 ) setCommentType(0);
-      if ( type > 3 ) setCommentType(2);
+  if ( localStorage.getItem("party") ) {
+    simpleAJAX(`/api/vote${location.search},${localStorage.getItem("party")},${type}`,function() {
+      simpleAJAX(`/api/info${location.search}`,function(result) {
+        data = JSON.parse(result);
+        renderAll();
+        if ( type < 3 ) setCommentType(0);
+        if ( type > 3 ) setCommentType(2);
+      });
     });
-  });
+  } else {
+    alert("Before voting, you must select an opinion from the home page.");
+  }
 }
 
 function runComment(text,replyId,id) {
