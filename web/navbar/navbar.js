@@ -36,3 +36,52 @@ function renderNavbar() {
   row.appendChild(col4);
   navbar.appendChild(row);
 }
+
+function renderBarGraphic(element,rating) {
+  function animateFrame() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.lineWidth = 15;
+    ctx.strokeStyle = "blue";
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.0 * Math.PI,1.2 * Math.PI,false);
+    ctx.stroke();
+    ctx.strokeStyle = "#9999ff";
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.2 * Math.PI,1.4 * Math.PI,false);
+    ctx.stroke();
+    ctx.strokeStyle = "#999999";
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.4 * Math.PI,1.6 * Math.PI,false);
+    ctx.stroke();
+    ctx.strokeStyle = "#ff9999";
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.6 * Math.PI,1.8 * Math.PI,false);
+    ctx.stroke();
+    ctx.strokeStyle = "red";
+    ctx.beginPath();
+    ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.8 * Math.PI,2.0 * Math.PI,false);
+    ctx.stroke();
+    ctx.strokeStyle = "black";
+    var activeCount = Math.min(frameCount,Math.floor(Math.abs(rating)));
+    var angle = (activeCount * Math.sign(rating) + 100) / 200 + 1;
+    var xval = Math.cos(angle * Math.PI) * (canvas.width / 2 - 3) + (canvas.width / 2);
+    var yval = Math.sin(angle * Math.PI) * (canvas.width / 2 - 3) + (canvas.height / 2);
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2,canvas.height / 2);
+    ctx.lineTo(xval,yval);
+    ctx.stroke();
+    ctx.fillStyle = ["blue","black","red"][Math.sign(rating) + 1];
+    ctx.textAlign = "center";
+    ctx.font = "80px Arial";
+    ctx.fillText(activeCount + "%",canvas.width / 2,canvas.height * 0.75);
+    frameCount++;
+    if ( frameCount >= 100 ) clearInterval(graphicInterval);
+  }
+  var canvas = document.createElement("canvas");
+  canvas.height = canvas.width;
+  element.appendChild(canvas);
+  var ctx = canvas.getContext("2d");
+  var frameCount = 0;
+  var graphicInterval = setInterval(animateFrame,25);
+ }

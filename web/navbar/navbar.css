@@ -1,3 +1,7 @@
+canvas {
+  border: 0px;
+  width: 50%;
+}
 #navbar {
   background-color: #333;
   vertical-align: center;
