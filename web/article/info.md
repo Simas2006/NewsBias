@@ -1,14 +1,14 @@
 ## Reading Vote Statistics
 
-Key | X Axis                | Y Axis
---- | --------------------- | ---------------------
-<S  | Strongly Voting Left  | Strongly Left Aligned
-<M  | Normally Voting Left  | Normally Left Aligned
-<W  | Weakly Voting Left    | Weakly Left Aligned
-<C> | Voting in Center      | ---
-W>  | Weakly Voting Right   | Weakly Right Aligned
-M>  | Normally Voting Right | Normally Right Aligned
-S>  | Strongly Voting Right | Strongly Right Aligned
+---       | X Axis                | Y Axis
+--------- | --------------------- | ---------------------
+&lt;S     | Strongly Voting Left  | Strongly Left Aligned
+&lt;M     | Normally Voting Left  | Normally Left Aligned
+&lt;W     | Weakly Voting Left    | Weakly Left Aligned
+&lt;C&gt; | Voting in Center      | ---
+W&gt;     | Weakly Voting Right   | Weakly Right Aligned
+M&gt;     | Normally Voting Right | Normally Right Aligned
+S&gt;     | Strongly Voting Right | Strongly Right Aligned
 
 ### Color Calculation
 
@@ -19,8 +19,8 @@ f.rating  | rating / 100                      |
 low byte  | 255 * f                           |
 high byte | 255                               |
 color     | rgb(low byte,low byte,high byte)  | rating < 0
-color     | rgb(high byte,low byte,low byte ) | rating > 0
-color     | rgb(low byte,low byte,low byte )  | rating = 0
+color     | rgb(high byte,low byte,low byte) | rating > 0
+color     | rgb(low byte,low byte,low byte)  | rating = 0
 
 ### Download
 
