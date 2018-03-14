@@ -1,14 +1,14 @@
 ## Reading Vote Statistics
 
---- | X Axis                | Y Axis
---- | --------------------- | ---------------------
-<S  | Strongly Voting Left  | Strongly Left Aligned
-<M  | Normally Voting Left  | Normally Left Aligned
-<W  | Weakly Voting Left    | Weakly Left Aligned
-<C> | Voting in Center      | ---
-W>  | Weakly Voting Right   | Weakly Right Aligned
-M>  | Normally Voting Right | Normally Right Aligned
-S>  | Strongly Voting Right | Strongly Right Aligned
+---       | X Axis                | Y Axis
+--------- | --------------------- | ---------------------
+&lt;S     | Strongly Voting Left  | Strongly Left Aligned
+&lt;M     | Normally Voting Left  | Normally Left Aligned
+&lt;W     | Weakly Voting Left    | Weakly Left Aligned
+&lt;C&gt; | Voting in Center      | ---
+W&gt;     | Weakly Voting Right   | Weakly Right Aligned
+M&gt;     | Normally Voting Right | Normally Right Aligned
+S&gt;     | Strongly Voting Right | Strongly Right Aligned
 
 ### Color Calculation
 
