@@ -10,9 +10,11 @@ function renderNavbar() {
   var col1 = document.createElement("td");
   col1.className = "navbar-item navbar-item-small aligncenter";
   col1.onclick = _ => location.href = "/web/home/index.html";
-  var span = document.createElement("span");
-  span.innerText = "NewsBias";
-  col1.appendChild(span);
+  var img = document.createElement("img");
+  img.src = "/web/navbar/icon.png";
+  img.width = "30";
+  img.height = "30";
+  col1.appendChild(img);
   row.appendChild(col1);
   var col2 = document.createElement("td");
   col2.className = "navbar-item navbar-item-large aligncenter";
