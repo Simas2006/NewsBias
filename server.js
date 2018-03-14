@@ -6,7 +6,7 @@ var WAIT_BETWEEN_VOTES = 15 * 60 * 1000;
 var VOTE_MODIFIER = 0.25;
 var SEARCH_THRESHOLD = 0.66;
 var recentVotes = {};
-var articles,comments;
+var articles,comments,reports;
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
@@ -341,6 +341,21 @@ app.use("/api/stats",function(request,response) {
   response.end();
 });
 
+app.use("/api/admin/report",function(request,response) {
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  reports.push({
+    type: qs[0],
+    article: qs[1],
+    comment: (qs[2] || "").toString() || null
+  });
+  console.log(`REPORT ${qs[0]} ${qs[1]} ${qs[2] || null}`);
+  response.writeHead(200);
+  response.write("ok");
+  response.end();
+});
+
 app.use("/web",express.static("web"));
 
 app.get("/",function(request,response) {
@@ -402,14 +417,20 @@ app.listen(PORT,function() {
     articles = JSON.parse(data.toString());
     fs.readFile(__dirname + "/comments.json",function(err,data) {
       comments = JSON.parse(data.toString());
-      setInterval(function() {
-        fs.writeFile(__dirname + "/articles.json",JSON.stringify(articles),function(err) {
-          if ( err ) throw err;
-          fs.writeFile(__dirname + "/comments.json",JSON.stringify(comments),function(err) {
+      fs.readFile(__dirname + "/reports.json",function(err,data) {
+        reports = JSON.parse(data.toString());
+        setInterval(function() {
+          fs.writeFile(__dirname + "/articles.json",JSON.stringify(articles),function(err) {
             if ( err ) throw err;
+            fs.writeFile(__dirname + "/comments.json",JSON.stringify(comments),function(err) {
+              if ( err ) throw err;
+              fs.writeFile(__dirname + "/reports.json",JSON.stringify(reports),function(err) {
+                if ( err ) throw err;
+              });
+            });
           });
-        });
-      },20000);
+        },20000);
+      });
     });
   });
   console.log("Listening on port " + PORT);
