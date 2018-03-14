@@ -58,6 +58,7 @@ function renderAll() {
       element.appendChild(document.createElement("br"));
     }
   }
+  if ( ! localStorage.getItem("points") ) localStorage.setItem("points","0:0:0");
   var text = ["bronze","silver","ruby","gold","emerald","diamond"];
   var points = parseInt(localStorage.getItem("points")[0]);
   var awards = document.getElementById("awards");

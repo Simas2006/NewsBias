@@ -1,4 +1,10 @@
 function renderNavbar() {
+  var points = localStorage.getItem("points").split(":").map(item => parseInt(item));
+  if ( points[1] >= Math.pow(2,points[0]) * 100 ) {
+    points[1] -= Math.pow(2,points[0]) * 100;
+    points[2] = 1;
+    localStorage.setItem("points",points.join(":"));
+  }
   var navbar = document.getElementById("navbar");
   var row = document.createElement("tr");
   var col1 = document.createElement("td");
@@ -38,6 +44,7 @@ function renderNavbar() {
   if ( ! localStorage.getItem("reminders") ) localStorage.setItem("reminders","");
   var reminders = localStorage.getItem("reminders").split(",").map(item => item.split(":"));
   reminders = reminders.filter(item => parseInt(item[1]) < new Date().getTime());
+  if ( localStorage.getItem("points").split(":")[2] == "1" ) reminders.push(null);
   if ( reminders.length > 0 ) {
     var badge = document.createElement("p");
     badge.className = "navbar-badge";
@@ -108,7 +115,7 @@ function renderBarGraphic(element,rating) {
 }
 
 function incrementAwardPoints(val) {
-  if ( ! localStorage.getItem("points") ) localStorage.setItem("points","0:0");
+  if ( ! localStorage.getItem("points") ) localStorage.setItem("points","0:0:0");
   var points = localStorage.getItem("points").split(":");
   points[1] = parseInt(points[1]) + val;
   localStorage.setItem("points",points.join(":"));

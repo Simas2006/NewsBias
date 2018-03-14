@@ -65,13 +65,31 @@ window.onload = function() {
   }
   var list = localStorage.getItem("reminders").split(",").map(item => item.split(":"));
   list = list.filter(item => parseInt(item[1]) < new Date().getTime());
+  var points = localStorage.getItem("points").split(":").map(item => parseInt(item));
+  if ( points[2] ) {
+    var awards = ["bronze","silver","ruby","gold","emerald","diamond"];
+    var div = document.getElementById("new-award");
+    var p = document.createElement("p");
+    p.innerText = "You got a new award! ";
+    div.appendChild(p);
+    var award = document.createElement("button");
+    award.id = awards[points[0]] + "-award";
+    award.className = "tiny";
+    award.innerText = awards[points[0]].charAt(0).toUpperCase();
+    award.onclick = function() {
+      points[0]++;
+      points[2] = 0;
+      localStorage.setItem("points",points.join(":"));
+      location.href = "/web/home/index.html";
+    }
+    div.appendChild(award);
+  }
   if ( list.length > 0 ) {
     getItems(function() {
       renderAll();
-      renderNavbar();
     });
-  } else {
+  } else if ( ! points[2] ) {
     document.getElementById("error").innerText = "You have no triggered reminders right now.";
-    renderNavbar();
   }
+  renderNavbar();
 }
