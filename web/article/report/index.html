@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>NewsBias</title>
+  <link rel="stylesheet" type="text/css" href="../style.css" />
+  <script src="script.js"></script>
+</head>
+<body>
+  <h3 id="header"></h3>
+  <hr />
+  <form id="form">
+    <input type="radio" name="type" value="0">
+    Unwanted commerical content or spam<br />
+    <input type="radio" name="type" value="1">
+    Infringes copyright laws<br />
+    <input type="radio" name="type" value="2">
+    Explicit material<br />
+    <input type="radio" name="type" value="3">
+    Hate speech or graphic violence<br />
+    <input type="radio" name="type" value="4">
+    Harassment or bullying
+  </form>
+  <hr />
+  <button class="rectangle" onclick="sendReport()">Send Report</button>
+</body>
+</html>

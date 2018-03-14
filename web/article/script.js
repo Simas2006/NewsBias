@@ -268,8 +268,15 @@ function setCommentType(type) {
   commentType = type;
 }
 
-function commentDropdownOperation(type) {
-
+function commentDropdownOperation(type,button) {
+  if ( type == 0 ) {
+    document.getElementById("replyBox:" + commentDialogSelected).focus();
+  } else if ( type == 1 ) {
+    window.open(`/web/article/report/index.html${location.search},${commentDialogSelected}`,"_blank");
+  } else if ( type == 2 ) {
+    
+  }
+  document.getElementById("commentDropdown").style.display = "none";
 }
 
 function reminderDropdownOperation(type) {
