@@ -51,6 +51,7 @@ function renderAll(reports) {
       options.className = "tiny wide";
       options.setAttribute("comment_id",chain[i].id);
       options.onclick = function() {
+        if ( localStorage.getItem("modPassword") ) document.getElementById("moderation2").style.display = "block";
         var dropdown = document.getElementById("commentDropdown");
         if ( commentDialogSelected != this.getAttribute("comment_id") ) {
           var position = this.getBoundingClientRect();
@@ -283,8 +284,10 @@ function setCommentType(type) {
 function commentDropdownOperation(type) {
   if ( type == 0 ) {
     document.getElementById(commentDialogSelected != "article" ? "replyBox:" + commentDialogSelected : "comment").focus();
+    commentDialogSelected = null;
   } else if ( type == 1 ) {
     window.open(`/web/article/report/index.html${location.search}${commentDialogSelected != "article" ? "," + commentDialogSelected : ""}`,"_blank");
+    commentDialogSelected = null;
   } else if ( type == 2 ) {
     simpleAJAX(`/api/admin/saltcount`,function(salt) {
       salt = parseInt(salt);
@@ -318,6 +321,7 @@ function reminderDropdownOperation(type) {
 }
 
 function toggleArticleDropdown(button) {
+  document.getElementById("moderation2").style.display = "none";
   var dropdown = document.getElementById("commentDropdown");
   if ( commentDialogSelected != "article" ) {
     var position = button.getBoundingClientRect();
@@ -379,4 +383,8 @@ window.onload = function() {
     renderNavbar();
     setCommentType(1);
   });
+  if ( localStorage.getItem("modPassword") ) {
+    document.getElementById("moderation1").style.display = "block";
+    document.getElementById("moderation2").style.display = "block";
+  }
 }

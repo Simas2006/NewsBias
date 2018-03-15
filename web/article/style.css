@@ -117,6 +117,9 @@ td.right.fade {
   border: 5px solid red;
   background-color: #f99;
 }
+.moderation {
+  display: none;
+}
 .dropdown {
   background-color: white;
   width: 150px;
