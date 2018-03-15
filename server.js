@@ -2,7 +2,8 @@ var fs = require("fs");
 var CryptoJS = require("./aes");
 var express = require("express");
 var app = express();
-var PORT = process.argv[2] || 8000;
+var MOD_PASSWORD = process.argv[2];
+var PORT = process.argv[3] || 8000;
 var WAIT_BETWEEN_VOTES = 15 * 60 * 1000;
 var VOTE_MODIFIER = 0.25;
 var SEARCH_THRESHOLD = 0.66;
@@ -363,7 +364,7 @@ app.use("/api/admin/checkreports",function(request,response) {
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
   var result = {};
-  qs[1] = CryptoJS.AES.decrypt(qs[1],"password").toString(CryptoJS.enc.Utf8).split(",");
+  qs[1] = CryptoJS.AES.decrypt(qs[1],MOD_PASSWORD).toString(CryptoJS.enc.Utf8).split(",");
   if ( qs[1][0] != "checkreports" || qs[1][1] != saltCount ) {
     console.log(`REJECT nodecrypt ${ip} ${qs[0]} ${qs[1] != "null" ? qs[1] : ""}`);
     response.writeHead(400);
@@ -399,7 +400,7 @@ app.use("/api/admin/delete",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
-  qs = CryptoJS.AES.decrypt(qs[0],"password").toString(CryptoJS.enc.Utf8).split(",");
+  qs = CryptoJS.AES.decrypt(qs[0],MOD_PASSWORD).toString(CryptoJS.enc.Utf8).split(",");
   if ( qs[0] == "" || qs[2] != saltCount ) {
     console.log(`REJECT nodecrypt ${ip} ${qs[0]} ${qs[1] != "null" ? qs[1] : ""}`);
     response.writeHead(400);
@@ -431,7 +432,7 @@ app.use("/api/admin/rain",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
-  qs = CryptoJS.AES.decrypt(qs[0],"password").toString(CryptoJS.enc.Utf8).split(",");
+  qs = CryptoJS.AES.decrypt(qs[0],MOD_PASSWORD).toString(CryptoJS.enc.Utf8).split(",");
   if ( qs[0] == "" || qs[2] != saltCount ) {
     console.log(`REJECT nodecrypt ${ip} ${qs[0]} ${qs[1] != "null" ? qs[1] : ""}`);
     response.writeHead(400);
@@ -441,7 +442,7 @@ app.use("/api/admin/rain",function(request,response) {
   }
   searchTree(comments[qs[0]],qs[1]);
   console.log(`RAIN ${ip} ${qs[0]} ${qs[1]}`);
-  response.writeHead(400);
+  response.writeHead(200);
   response.write("ok");
   response.end();
 });
