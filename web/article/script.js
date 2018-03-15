@@ -42,7 +42,7 @@ function renderAll() {
       value.className = "tiny";
       votes.appendChild(value);
       var options = document.createElement("button");
-      options.innerHTML = "	&#8226; &#8226; &#8226;";
+      options.innerHTML = "&#8226; &#8226; &#8226;";
       options.className = "tiny wide";
       options.setAttribute("comment_id",chain[i].id);
       options.onclick = function() {
@@ -270,15 +270,16 @@ function setCommentType(type) {
 
 function commentDropdownOperation(type,button) {
   if ( type == 0 ) {
-    document.getElementById("replyBox:" + commentDialogSelected).focus();
+    document.getElementById(commentDialogSelected != "article" ? "replyBox:" + commentDialogSelected : "comment").focus();
   } else if ( type == 1 ) {
-    window.open(`/web/article/report/index.html${location.search},${commentDialogSelected}`,"_blank");
+    window.open(`/web/article/report/index.html${location.search}${commentDialogSelected != "article" ? "," + commentDialogSelected : ""}`,"_blank");
   } else if ( type == 2 ) {
     simpleAJAX(`/api/admin/saltcount`,function(salt) {
       salt = parseInt(salt);
-      var encrypted = CryptoJS.AES.encrypt(`${location.search.slice(1)},${commentDialogSelected},${salt}`,localStorage.getItem("modPassword"));
+      var encrypted = CryptoJS.AES.encrypt(`${location.search.slice(1)},${commentDialogSelected != "article" ? commentDialogSelected : "null"},${salt}`,localStorage.getItem("modPassword"));
       simpleAJAX(`/api/admin/delete?${encrypted}`,function(data) {
-        location.reload();
+        if ( commentDialogSelected != "article" ) location.reload();
+        else location.href = "/web/home/index.html";
       });
     });
   }
@@ -294,6 +295,22 @@ function reminderDropdownOperation(type) {
     document.getElementById("reminderButton").innerHTML = "&#x1f514";
   }
   toggleReminderDropdown();
+}
+
+function toggleArticleDropdown(button) {
+  var dropdown = document.getElementById("commentDropdown");
+  if ( commentDialogSelected != "article" ) {
+    var position = button.getBoundingClientRect();
+    var bodyPosition = document.body.getBoundingClientRect();
+    dropdown.style.position = "absolute";
+    dropdown.style.left = (position.left - bodyPosition.left + position.width * 0.5) + "px";
+    dropdown.style.top = (position.top - bodyPosition.top + position.height * 0.5) + "px";
+    dropdown.style.display = "block";
+    commentDialogSelected = "article";
+  } else {
+    dropdown.style.display = "none";
+    commentDialogSelected = null;
+  }
 }
 
 function toggleReminderDropdown(button) {
