@@ -1,5 +1,5 @@
 var data;
-var commentType;
+var commentType = 1;
 var commentDialogSelected;
 var reminders;
 var hasActiveReminder;
@@ -245,7 +245,7 @@ function runComment(text,replyId,id) {
     return;
   }
   var req = new XMLHttpRequest();
-  req.open("POST",`/api/comment${location.search},${document.getElementById(id + ":name").value},${replyId || -1},${replyId ? 1 : (commentType || 1)}`);
+  req.open("POST",`/api/comment${location.search},${document.getElementById(id + ":name").value},${replyId || -1},${replyId ? 1 : commentType}`);
   req.onload = function() {
     simpleAJAX(`/api/info${location.search}`,function(result) {
       data = JSON.parse(result);
@@ -274,7 +274,13 @@ function commentDropdownOperation(type,button) {
   } else if ( type == 1 ) {
     window.open(`/web/article/report/index.html${location.search},${commentDialogSelected}`,"_blank");
   } else if ( type == 2 ) {
-    
+    simpleAJAX(`/api/admin/saltcount`,function(salt) {
+      salt = parseInt(salt);
+      var encrypted = CryptoJS.AES.encrypt(`${location.search.slice(1)},${commentDialogSelected},${salt}`,localStorage.getItem("modPassword"));
+      simpleAJAX(`/api/admin/delete?${encrypted}`,function(data) {
+        location.reload();
+      });
+    });
   }
   document.getElementById("commentDropdown").style.display = "none";
 }

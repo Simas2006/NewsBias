@@ -1,4 +1,5 @@
 var fs = require("fs");
+var CryptoJS = require("./aes");
 var express = require("express");
 var app = express();
 var PORT = process.argv[2] || 8000;
@@ -7,6 +8,7 @@ var VOTE_MODIFIER = 0.25;
 var SEARCH_THRESHOLD = 0.66;
 var recentVotes = {};
 var articles,comments,reports;
+var saltCount = 0;
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
@@ -350,9 +352,47 @@ app.use("/api/admin/report",function(request,response) {
     article: qs[1],
     comment: (qs[2] || "").toString() || null
   });
-  console.log(`REPORT ${qs[0]} ${qs[1]} ${qs[2] || null}`);
+  console.log(`REPORT ${ip} ${qs[0]} ${qs[1]} ${qs[2] || null}`);
   response.writeHead(200);
   response.write("ok");
+  response.end();
+});
+
+app.use("/api/admin/delete",function(request,response) {
+  function searchTree(chain,id) {
+    if ( chain.length == 0 ) return false;
+    for ( var i = 0; i < chain.length; i++ ) {
+      if ( chain[i].id == id ) {
+        chain.splice(i,1);
+        return true;
+      }
+      if ( searchTree(chain[i].replies,id) ) return true;
+    }
+    return false;
+  }
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  qs = CryptoJS.AES.decrypt(qs[0],"password").toString(CryptoJS.enc.Utf8).split(",");
+  if ( qs[0] == "" ) {
+    response.writeHead(400);
+    response.write("err_fail_decrypt");
+    response.end();
+    return;
+  }
+  if ( qs[1] != "null" ) searchTree(comments[qs[0]],qs[1]);
+  else delete articles[qs[0]];
+  response.writeHead(200);
+  response.write("ok");
+  response.end();
+});
+
+app.use("/api/admin/saltcount",function(request,response) {
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  response.writeHead(200);
+  response.write(saltCount.toString());
   response.end();
 });
 
