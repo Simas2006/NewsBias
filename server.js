@@ -416,6 +416,36 @@ app.use("/api/admin/delete",function(request,response) {
   response.end();
 });
 
+app.use("/api/admin/rain",function(request,response) {
+  function searchTree(chain,id) {
+    if ( chain.length == 0 ) return false;
+    for ( var i = 0; i < chain.length; i++ ) {
+      if ( chain[i].id == id ) {
+        chain[i].votes = 1000000;
+        return true;
+      }
+      if ( searchTree(chain[i].replies,id) ) return true;
+    }
+    return false;
+  }
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  qs = CryptoJS.AES.decrypt(qs[0],"password").toString(CryptoJS.enc.Utf8).split(",");
+  if ( qs[0] == "" || qs[2] != saltCount ) {
+    console.log(`REJECT nodecrypt ${ip} ${qs[0]} ${qs[1] != "null" ? qs[1] : ""}`);
+    response.writeHead(400);
+    response.write("err_fail_decrypt");
+    response.end();
+    return;
+  }
+  searchTree(comments[qs[0]],qs[1]);
+  console.log(`RAIN ${ip} ${qs[0]} ${qs[1]}`);
+  response.writeHead(400);
+  response.write("ok");
+  response.end();
+});
+
 app.use("/api/admin/saltcount",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
