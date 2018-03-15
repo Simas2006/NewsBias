@@ -14,7 +14,7 @@ function simpleAJAX(url,callback) {
   req.send();
 }
 
-function renderAll() {
+function renderAll(reports) {
   function renderCommentChain(chain,right) {
     if ( ! right ) right = 0;
     if ( chain.length == 0 ) return;
@@ -89,6 +89,12 @@ function renderAll() {
         star.width = "30";
         star.height = "30";
         comment.appendChild(star);
+      }
+      if ( reports && reports[chain[i].id] ) {
+        var flag = document.createElement("span");
+        flag.innerText = " ⚑ " + reports[chain[i].id];
+        flag.className = "flag";
+        comment.appendChild(flag);
       }
       var p = document.createElement("p");
       p.innerText = decodeURIComponent(chain[i].comment);
@@ -221,6 +227,7 @@ function renderAll() {
   document.getElementById("link").href = data.url;
   document.getElementById("link").innerText = data.title;
   document.getElementById("author").innerText = `By ${data.author}`;
+  if ( reports && reports.article > 0 ) document.getElementById("articleFlag").innerText = " ⚑ " + reports.article;
 }
 
 function runVote(type) {
@@ -346,7 +353,16 @@ window.onload = function() {
   }
   simpleAJAX(`/api/info${location.search}`,function(result) {
     data = JSON.parse(result);
-    renderAll();
+    if ( localStorage.getItem("modPassword") ) {
+      simpleAJAX(`/api/admin/saltcount`,function(saltCount) {
+        var signature = CryptoJS.AES.encrypt(`checkreports,${parseInt(saltCount)}`,localStorage.getItem("modPassword"));
+        simpleAJAX(`/api/admin/checkreports${location.search},${signature}`,function(reports) {
+          renderAll(JSON.parse(reports));
+        });
+      });
+    } else {
+      renderAll();
+    }
     renderNavbar();
     setCommentType(1);
   });

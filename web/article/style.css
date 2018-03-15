@@ -135,6 +135,9 @@ td.right.fade {
 .dropdown > button:hover {
   background-color: #ccc;
 }
+.flag {
+  color: red;
+}
 #author {
   color: #999;
 }

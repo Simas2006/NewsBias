@@ -358,6 +358,32 @@ app.use("/api/admin/report",function(request,response) {
   response.end();
 });
 
+app.use("/api/admin/checkreports",function(request,response) {
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  var result = {};
+  qs[1] = CryptoJS.AES.decrypt(qs[1],"password").toString(CryptoJS.enc.Utf8).split(",");
+  if ( qs[1][0] != "checkreports" || qs[1][1] != saltCount ) {
+    console.log(`REJECT nodecrypt ${ip} ${qs[0]} ${qs[1] != "null" ? qs[1] : ""}`);
+    response.writeHead(400);
+    response.write("err_fail_decrypt");
+    response.end();
+    return;
+  }
+  var active = reports.filter(item => item.article == qs[0]);
+  for ( var i = 0; i < active.length; i++ ) {
+    var id = active[i].comment ? active[i].comment : "article";
+    if ( ! result[id] ) result[id] = 0;
+    result[id]++;
+  }
+  saltCount++;
+  console.log(`CHECKREPORTS ${ip} ${qs[0]}`);
+  response.writeHead(200);
+  response.write(JSON.stringify(result));
+  response.end();
+});
+
 app.use("/api/admin/delete",function(request,response) {
   function searchTree(chain,id) {
     if ( chain.length == 0 ) return false;
