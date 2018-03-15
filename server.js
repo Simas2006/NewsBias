@@ -374,7 +374,8 @@ app.use("/api/admin/delete",function(request,response) {
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
   qs = CryptoJS.AES.decrypt(qs[0],"password").toString(CryptoJS.enc.Utf8).split(",");
-  if ( qs[0] == "" ) {
+  if ( qs[0] == "" || qs[2] != saltCount ) {
+    console.log(`REJECT nodecrypt ${ip} ${qs[0]} ${qs[1] != "null" ? qs[1] : ""}`);
     response.writeHead(400);
     response.write("err_fail_decrypt");
     response.end();
@@ -382,6 +383,8 @@ app.use("/api/admin/delete",function(request,response) {
   }
   if ( qs[1] != "null" ) searchTree(comments[qs[0]],qs[1]);
   else delete articles[qs[0]];
+  saltCount++;
+  console.log(`REMOVE ${ip} ${qs[0]} ${qs[1] != "null" ? qs[1] : ""}`)
   response.writeHead(200);
   response.write("ok");
   response.end();
