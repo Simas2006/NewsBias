@@ -16,11 +16,11 @@ Name      | Value                             | Condition
 --------- | --------------------------------- | ----------
 rating    | percentage from 1-100             |
 f.rating  | rating / 100                      |
-low byte  | 255 * f                           |
+low byte  | 255 * f.rating                    |
 high byte | 255                               |
 color     | rgb(low byte,low byte,high byte)  | rating < 0
-color     | rgb(high byte,low byte,low byte) | rating > 0
-color     | rgb(low byte,low byte,low byte)  | rating = 0
+color     | rgb(high byte,low byte,low byte)  | rating > 0
+color     | rgb(low byte,low byte,low byte)   | rating = 0
 
 ### Download
 
