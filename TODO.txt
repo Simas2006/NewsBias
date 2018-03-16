@@ -1,0 +1,5 @@
+- Create bar graphic + setting
+- Change color depending on location
+- Add "Recently Viewed" to home screen
+- Give message on incorrect mod password
+- Wiki
