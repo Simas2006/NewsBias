@@ -294,8 +294,8 @@ app.use("/api/search",function(request,response) {
   function calculatePoints(string,item) {
     var points = 0;
     for ( var j = 0; j < string.length; j++ ) {
-      if ( item.url.indexOf(string[j]) > -1 ) points++;
-      if ( item.title.indexOf(string[j]) > -1 ) points++;
+      if ( item.url.toLowerCase().indexOf(string[j].toLowerCase()) > -1 ) points++;
+      if ( item.title.toLowerCase().indexOf(string[j].toLowerCase()) > -1 ) points++;
     }
     return points / string.length;
   }
