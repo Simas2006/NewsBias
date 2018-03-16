@@ -5,6 +5,10 @@ a {
   font-weight: bold;
   text-decoration: none;
 }
+select {
+  background-color: white;
+  font-size: 100%;
+}
 textarea {
   border: 0px;
   resize: none;

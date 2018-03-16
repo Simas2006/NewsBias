@@ -23,7 +23,7 @@ function renderNavbar() {
   input.placeholder = "Search for something... 🔎";
   input.onkeyup = function(event) {
     if ( event.key == "Enter" ) {
-      location.href = "/web/search/index.html?" + this.value;
+      location.href = "/web/search/index.html?" + this.value + ",-1";
     }
   }
   col2.appendChild(input);

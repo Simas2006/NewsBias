@@ -315,6 +315,7 @@ app.use("/api/search",function(request,response) {
     response.write(JSON.stringify(results));
     response.end();
   } else {
+    qs[0] = qs.slice(0,-1).join(",");
     var keys = Object.keys(articles);
     var string = qs[0].split("%20").map(item => decodeURIComponent(item));
     var arr = [];
@@ -322,6 +323,8 @@ app.use("/api/search",function(request,response) {
     for ( var i = 0; i < keys.length; i++ ) {
       arr.push(articles[keys[i]]);
     }
+    var type = qs[qs.length - 1];
+    if ( type != -1 ) arr = arr.filter(item => item.category == type);
     var sorted = arr.sort((a,b) => {
       var pointsa = calculatePoints(string,a);
       var pointsb = calculatePoints(string,b);

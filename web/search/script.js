@@ -10,7 +10,9 @@ function simpleAJAX(url,callback) {
 }
 
 function renderAll() {
-  document.getElementById("title").innerText = `${searchData.length} result${searchData.length != 1 ? "s": ""} for "${decodeURIComponent(location.search.slice(1))}"`;
+  var qs = location.search.slice(1).split(",");
+  document.getElementById("title").innerText = `${searchData.length} result${searchData.length != 1 ? "s": ""} for "${decodeURIComponent(qs.slice(0,-1).join(","))}"`;
+  document.getElementById("type").value = qs[qs.length - 1];
   var table = document.getElementById("results");
   for ( var i = 0; i < searchData.length; i++ ) {
     var row = document.createElement("tr");
@@ -51,12 +53,18 @@ function renderAll() {
   }
 }
 
+function changeType(type) {
+  var qs = location.search.split(",");
+  qs[qs.length - 1] = type;
+  location.search = qs.join(",");
+}
+
 window.onload = function() {
   simpleAJAX(`/api/search${location.search}`,function(data) {
     searchData = JSON.parse(data);
     renderAll();
     renderNavbar();
     incrementAwardPoints(0.1);
-    document.getElementById("navbar-search").value = decodeURIComponent(location.search.slice(1));
+    document.getElementById("navbar-search").value = decodeURIComponent(location.search.slice(1).split(",").slice(0,-1).join(","));
   });
 }
