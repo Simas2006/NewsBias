@@ -5,14 +5,36 @@ var app = express();
 var MOD_PASSWORD = process.argv[2];
 var PORT = process.argv[3] || 8000;
 var WAIT_BETWEEN_VOTES = 15 * 60 * 1000;
+var COOLDOWN_UNIT = 15000;
 var VOTE_MODIFIER = 0.25;
 var SEARCH_THRESHOLD = 0.66;
 var recentVotes = {};
+var ipCooldown = {};
 var articles,comments,reports;
 var saltCount = 0;
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
+
+app.use("/api",function(request,response,next) {
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  if ( ! ipCooldown[ip] ) ipCooldown[ip] = {
+    recentRequests: 0,
+    timestamp: new Date().getTime()
+  }
+  var remove = Math.floor((new Date().getTime() - ipCooldown[ip].timestamp) / COOLDOWN_UNIT);
+  ipCooldown[ip].recentRequests = Math.max(ipCooldown[ip].recentRequests - remove,0);
+  ipCooldown[ip].timestamp = new Date().getTime();
+  if ( ipCooldown[ip].recentRequests >= 20 ) {
+    console.log(`REJECT manyrequests ${ip}`);
+    response.writeHead(429);
+    response.write("err_many_requests");
+    response.end();
+  } else {
+    ipCooldown[ip].recentRequests++;
+    next();
+  }
+});
 
 app.use("/api/vote",function(request,response) {
   var url = request.url.split("?")[0];
