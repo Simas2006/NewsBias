@@ -1,5 +1,16 @@
-- Create bar graphic + setting
+- Add categories:
+  - Search √
+  - Home
+  - Create
+- Create bar graphic
+  - Graphic
+  - Setting
 - Change color depending on location
 - Add "Recently Viewed" to home screen
+  - Server
+  - Client
 - Give message on incorrect mod password
 - Wiki
+  - Features
+  - How to Use
+  - For Mods
