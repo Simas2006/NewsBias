@@ -14,6 +14,9 @@
   <br />
   <table>
     <tr>
+      <td colspan="2" id="error"></td>
+    </tr>
+    <tr>
       <td>URL:</td>
       <td>Name:</td>
     </tr>
@@ -58,7 +61,15 @@
       <td></td>
     </tr>
     <tr>
-      <td id="error"></td>
+      <td>
+        Type:
+        <select id="type">
+          <option value="0">Website</option>
+          <option value="1">Category</option>
+          <option value="2">Article</option>
+          <option value="3">Website</option>
+        </select>
+      </td>
       <td>
         <button onclick="runCreate()" class="rectangle">Create</button>
       </td>

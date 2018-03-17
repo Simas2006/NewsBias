@@ -28,7 +28,7 @@ function runCreate() {
     document.getElementById("error").className = "error";
     return;
   }
-  simpleAJAX(`/api/create?${document.getElementById("url").value},${document.getElementById("name").value},${document.getElementById("author").value}`,function(id) {
+  simpleAJAX(`/api/create?${document.getElementById("url").value},${document.getElementById("name").value},${document.getElementById("author").value},${document.getElementById("type").value}`,function(id) {
     simpleAJAX(`/api/vote?${id},${localStorage.getItem("party")},${opinion}`,function() {
       incrementAwardPoints(4);
       location.href = `/web/article/index.html?${id}`;

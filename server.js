@@ -146,6 +146,7 @@ app.use("/api/create",function(request,response) {
     url: qs[0],
     title: qs[1],
     author: qs[2],
+    category: qs[3],
     votes: [
       [0,0,0,0,0,0,0],
       [0,0,0,0,0,0,0],
