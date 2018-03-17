@@ -19,6 +19,7 @@ function simpleAJAX(url,callback) {
 }
 
 function renderAll() {
+  document.getElementById("type").value = location.search.slice(1) || -1;
   var titles = ["Hot Topic","Controversial","Not Passionate","Decided","One-Sided","You Decide"];
   for ( var i = 0; i < 6; i++ ) {
     var element = document.getElementById("screen" + (i + 1));
@@ -87,7 +88,7 @@ function openRandomPage() {
 
 window.onload = function() {
   if ( localStorage.getItem("party") ) setOpinion(parseInt(localStorage.getItem("party")));
-  simpleAJAX("/api/search?retr",function(data) {
+  simpleAJAX(`/api/search?retr,${location.search.slice(1) || -1}`,function(data) {
     searchData = JSON.parse(data);
     renderAll();
     renderNavbar();

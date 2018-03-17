@@ -251,12 +251,13 @@ app.use("/api/search",function(request,response) {
     }
     return sum;
   }
-  function sortOnMatrix(items,matrix) {
+  function sortOnMatrix(items,matrix,type) {
     var arr = [];
     var keys = Object.keys(items);
     for ( var i = 0; i < keys.length; i++ ) {
       arr.push(items[keys[i]]);
     }
+    if ( type != -1 ) arr = arr.filter(item => item.category == type);
     return arr.sort(function(a,b) {
       return applyMatrix(b.votes,matrix) - applyMatrix(a.votes,matrix);
     }).map(function(item) {
@@ -270,12 +271,13 @@ app.use("/api/search",function(request,response) {
       }
     });
   }
-  function sortOnDualMatrix(items,matrixa,matrixb,multiplier) {
+  function sortOnDualMatrix(items,matrixa,matrixb,multiplier,type) {
     var arr = [];
     var keys = Object.keys(items);
     for ( var i = 0; i < keys.length; i++ ) {
       arr.push(items[keys[i]]);
     }
+    if ( type != -1 ) arr = arr.filter(item => item.category == type);
     return arr.sort(function(a,b) {
       var vala = Math.abs(applyMatrix(a.votes,matrixa) - applyMatrix(a.votes,matrixb)) * multiplier;
       var valb = Math.abs(applyMatrix(b.votes,matrixa) - applyMatrix(b.votes,matrixb)) * multiplier;
@@ -304,12 +306,12 @@ app.use("/api/search",function(request,response) {
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
   if ( qs[0] == "retr" ) {
     var results = [
-      sortOnMatrix(articles,[1,1,1,1,1,1,1]).slice(0,3),
-      sortOnMatrix(articles,[4,2,1,1,1,2,4]).slice(0,3),
-      sortOnMatrix(articles,[1,2,4,6,4,2,1]).slice(0,3),
-      sortOnDualMatrix(articles,[1,1,1,0,0,0,0],[0,0,0,0,1,1,1],-1).slice(0,3),
-      sortOnDualMatrix(articles,[1,1,1,0,0,0,0],[0,0,0,0,1,1,1],1).slice(0,3),
-      sortOnMatrix(articles,[-1,-1,-1,-1,-1,-1,-1]).slice(0,3)
+      sortOnMatrix(articles,[1,1,1,1,1,1,1],qs[1]).slice(0,3),
+      sortOnMatrix(articles,[4,2,1,1,1,2,4],qs[1]).slice(0,3),
+      sortOnMatrix(articles,[1,2,4,6,4,2,1],qs[1]).slice(0,3),
+      sortOnDualMatrix(articles,[1,1,1,0,0,0,0],[0,0,0,0,1,1,1],-1,qs[1]).slice(0,3),
+      sortOnDualMatrix(articles,[1,1,1,0,0,0,0],[0,0,0,0,1,1,1],1,qs[1]).slice(0,3),
+      sortOnMatrix(articles,[-1,-1,-1,-1,-1,-1,-1],qs[1]).slice(0,3)
     ];
     response.writeHead(200);
     response.write(JSON.stringify(results));

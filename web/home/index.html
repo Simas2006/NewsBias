@@ -17,6 +17,18 @@
       <td id="awards"></td>
       <td class="aligncenter">
         <a href="javascript: openRandomPage()">Random Page</a>
+        <br />
+        <br />
+        <p>
+          Filter by:
+          <select id="type" onchange="location.search = this.value">
+            <option value="-1">All</option>
+            <option value="0">Website</option>
+            <option value="1">Category</option>
+            <option value="2">Article</option>
+            <option value="3">Website</option>
+          </select>
+        </p>
       </td>
       <td class="aligncenter">
         <p>My opinion is:</p>

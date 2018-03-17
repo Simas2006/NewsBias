@@ -1,6 +1,6 @@
 - Add categories:
   - Search √
-  - Home
+  - Home √
   - Create
 - Create bar graphic
   - Graphic
