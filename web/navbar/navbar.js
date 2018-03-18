@@ -61,7 +61,7 @@ function renderNavbar() {
 }
 
 function renderBarGraphic(element,rating) {
-  function animateFrame() {
+  function animateFramePie() {
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.lineWidth = 15;
@@ -105,6 +105,37 @@ function renderBarGraphic(element,rating) {
     frameCount++;
     if ( frameCount > 100 ) clearInterval(graphicInterval);
   }
+  function animateFrameBar() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = "blue";
+    ctx.fillRect(0,10,canvas.width / 5,canvas.height / 8 * 3);
+    ctx.fillStyle = "#9999ff";
+    ctx.fillRect(canvas.width / 5,10,canvas.width / 5,canvas.height / 8 * 3);
+    ctx.fillStyle = "#999999";
+    ctx.fillRect(canvas.width / 5 * 2,10,canvas.width / 5,canvas.height / 8 * 3);
+    ctx.fillStyle = "#ff9999";
+    ctx.fillRect(canvas.width / 5 * 3,10,canvas.width / 5,canvas.height / 8 * 3);
+    ctx.fillStyle = "red";
+    ctx.fillRect(canvas.width / 5 * 4,10,canvas.width / 5,canvas.height / 8 * 3);
+    ctx.fillStyle = "black";
+    ctx.fillRect(0,10,7,canvas.height / 8 * 3);
+    ctx.fillRect(canvas.width - 7,10,7,canvas.height / 8 * 3)
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 7;
+    var activeCount = Math.min(frameCount,Math.floor(Math.abs(rating)));
+    var xval = (activeCount / 100) * (canvas.width / 2) * Math.sign(rating) + (canvas.width / 2);
+    ctx.beginPath();
+    ctx.moveTo(xval,0);
+    ctx.lineTo(xval,canvas.height / 8 * 3 + 20);
+    ctx.stroke();
+    ctx.fillStyle = ["blue","black","red"][Math.sign(rating) + 1];
+    ctx.textAlign = "center";
+    ctx.font = "80px Arial";
+    ctx.fillText(activeCount + "%",canvas.width / 2,canvas.height * 0.75);
+    frameCount++;
+    if ( frameCount > 100 ) clearInterval(graphicInterval);
+  }
   while ( element.firstChild ) {
     element.removeChild(element.firstChild);
   }
@@ -113,7 +144,12 @@ function renderBarGraphic(element,rating) {
   element.appendChild(canvas);
   var ctx = canvas.getContext("2d");
   var frameCount = 0;
-  var graphicInterval = setInterval(animateFrame,25);
+  var graphicInterval;
+  if ( localStorage.getItem("graphicType") == "pie" ) {
+    graphicInterval = setInterval(animateFramePie,25);
+  } else if ( localStorage.getItem("graphicType") == "bar" ) {
+    graphicInterval = setInterval(animateFrameBar,25);
+  }
 }
 
 function incrementAwardPoints(val) {

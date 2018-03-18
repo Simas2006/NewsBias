@@ -3,7 +3,7 @@
   - Home √
   - Create √
 - Create bar graphic
-  - Graphic
+  - Graphic √
   - Setting
 - Change color depending on location
 - Add "Recently Viewed" to home screen
