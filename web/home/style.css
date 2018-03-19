@@ -90,6 +90,9 @@ button#right3 {
 button#center {
   background-color: white;
 }
+#graphicType {
+  font-size: 125%
+}
 #screen1 {
   border: 5px solid red;
   background-color: #f99;

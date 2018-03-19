@@ -19,7 +19,9 @@ function simpleAJAX(url,callback) {
 }
 
 function renderAll() {
+  if ( ! localStorage.getItem("graphicType") ) localStorage.setItem("graphicType","pie");
   document.getElementById("type").value = location.search.slice(1) || -1;
+  document.getElementById("graphicType").type.value = localStorage.getItem("graphicType");
   var titles = ["Hot Topic","Controversial","Not Passionate","Decided","One-Sided","You Decide"];
   for ( var i = 0; i < 6; i++ ) {
     var element = document.getElementById("screen" + (i + 1));

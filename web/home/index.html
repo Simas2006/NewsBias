@@ -51,6 +51,24 @@
       <td id="screen5" class="screen"></td>
       <td id="screen6" class="screen"></td>
     </tr>
+    <tr>
+      <td></td>
+      <td class="aligncenter">
+        <form id="graphicType">
+          Graphic Type:
+            <br />
+          Pie:
+            <img src="pie.png" width="50" height="25" />
+            <input type="radio" name="type" value="pie" onchange="localStorage.setItem('graphicType','pie')" />
+            <br />
+          Bar:
+            <img src="bar.png" width="50" height="25" />
+            <input type="radio" name="type" value="bar" onchange="localStorage.setItem('graphicType','bar')" />
+            <br />
+        </form>
+      </td>
+      <td></td>
+    </tr>
   </table>
 </body>
 </html>

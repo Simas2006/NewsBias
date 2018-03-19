@@ -4,12 +4,11 @@
   - Create √
 - Create bar graphic
   - Graphic √
-  - Setting
+  - Setting √
 - Change color depending on location
 - Add "Recently Viewed" to home screen
-  - Server
-  - Client
-- Give message on incorrect mod password
+- /api/admin/checkreports is free on /api/info
+- Give messages on errors
 - Wiki
   - Features
   - How to Use
