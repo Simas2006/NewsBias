@@ -93,6 +93,12 @@ button#right3 {
 button#center {
   background-color: white;
 }
+#screen0-container {
+  border: 5px solid black;
+  background-color: #999;
+  height: 30vh;
+  border-radius: 5%;
+}
 #screen1 {
   border: 5px solid red;
   background-color: #f99;
@@ -116,6 +122,9 @@ button#center {
 #screen6 {
   border: 5px solid purple;
   background-color: #f9f;
+}
+#screen0 > td > textarea {
+  background-color: #999;
 }
 #screen1 > textarea {
   background-color: #f99;

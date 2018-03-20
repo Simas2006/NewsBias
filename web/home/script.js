@@ -13,14 +13,18 @@ function renderAll() {
   if ( ! localStorage.getItem("graphicType") ) localStorage.setItem("graphicType","pie");
   document.getElementById("type").value = location.search.slice(1) || -1;
   document.getElementById("graphicType").type.value = localStorage.getItem("graphicType");
-  var titles = ["Hot Topic","Controversial","Not Passionate","Decided","One-Sided","You Decide"];
-  for ( var i = 0; i < 6; i++ ) {
-    var element = document.getElementById("screen" + (i + 1));
-    var heading = document.createElement("h3");
-    heading.innerText = titles[i];
-    element.appendChild(heading);
-    element.appendChild(document.createElement("hr"));
+  var titles = ["","Hot Topic","Controversial","Not Passionate","Decided","One-Sided","You Decide"];
+  for ( var i = 0; i < 7; i++ ) {
+    var element = document.getElementById("screen" + i);
+    if ( i > 0 ) {
+      var heading = document.createElement("h3");
+      heading.innerText = titles[i];
+      element.appendChild(heading);
+      element.appendChild(document.createElement("hr"));
+    }
     for ( var j = 0; j < searchData[i].length; j++ ) {
+      if ( i == 0 ) var col = document.createElement("td");
+      if ( searchData[i][j].votes ) searchData[i][j].rating = searchData[i][j].votes.rating;
       var title = document.createElement("a");
       title.innerText = `${searchData[i][j].title} - ${Math.abs(searchData[i][j].rating)}% Biased`;
       title.href = "/web/article/index.html?" + searchData[i][j].id;
@@ -34,8 +38,13 @@ function renderAll() {
       } else {
         title.className = "center";
       }
-      element.appendChild(title);
-      element.appendChild(document.createElement("br"));
+      if ( i > 0 ) {
+        element.appendChild(title);
+        element.appendChild(document.createElement("br"));
+      } else {
+        col.appendChild(title);
+        col.appendChild(document.createElement("br"));
+      }
       var comment = document.createElement("textarea");
       var selected = searchData[i][j].comments.filter(item => item.votes > 0 && item.opinion == opinion).sort((a,b) => b.votes - a.votes);
       selected = selected[0] || null;
@@ -47,9 +56,14 @@ function renderAll() {
       }
       comment.rows = "4";
       comment.disabled = "disabled";
-      element.appendChild(comment);
-      element.appendChild(document.createElement("br"));
-      element.appendChild(document.createElement("br"));
+      if ( i > 0 ) {
+        element.appendChild(comment);
+        element.appendChild(document.createElement("br"));
+        element.appendChild(document.createElement("br"));
+      } else {
+        col.appendChild(comment);
+        element.appendChild(col);
+      }
     }
   }
   if ( ! localStorage.getItem("points") ) localStorage.setItem("points","0:0:0");
