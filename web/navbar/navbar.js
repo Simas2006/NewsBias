@@ -69,9 +69,7 @@ function renderNavbar(callback) {
     badge.innerText = reminders.length;
     badge.style.display = "block";
   }
-  simpleAJAX("http://ip-api.com/json",function(locinfo) {
-    locinfo = JSON.parse(locinfo);
-    if ( locinfo.countryCode == "US" ) inUS = true;
+  function merge() {
     if ( inUS ) {
       document.body.style.setProperty("--left-color","blue");
       document.body.style.setProperty("--left-color-1","#4c4cff");
@@ -88,7 +86,18 @@ function renderNavbar(callback) {
       document.body.style.setProperty("--right-color-2","#9999ff");
     }
     callback();
-  });
+  }
+  if ( localStorage.getItem("location") ) {
+    inUS = localStorage.getItem("location") == "US";
+    merge();
+  } else {
+    simpleAJAX("http://ip-api.com/json",function(locinfo) {
+      locinfo = JSON.parse(locinfo);
+      if ( locinfo.countryCode == "US" ) inUS = true;
+      localStorage.setItem("location",locinfo.countryCode);
+      merge();
+    });
+  }
 }
 
 function renderBarGraphic(element,rating) {
