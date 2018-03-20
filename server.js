@@ -167,23 +167,29 @@ app.use("/api/info",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
-  if ( ! articles[qs[0]] ) {
-    response.writeHead(404);
-    response.write("err_no_article");
-    response.end();
-    console.log(`REJECT notfound ${ip} ${qs[0]}`);
-    return;
+  var data = [];
+  for ( var i = 0; i < qs.length; i++ ) {
+    if ( ! articles[qs[i]] ) {
+      response.writeHead(404);
+      response.write("err_no_article");
+      response.end();
+      console.log(`REJECT notfound ${ip} ${qs[i]}`);
+      return;
+    }
+    var item = articles[qs[i]];
+    data.push({
+      id: item.id,
+      url: item.url,
+      title: item.title,
+      author: item.author,
+      comments: comments[qs[i]],
+      votes: calculateVotes(item.votes,true)
+    });
   }
   console.log(`INFO ${ip} ${qs[0]}`);
   response.writeHead(200);
-  response.write(JSON.stringify({
-    id: articles[qs[0]].id,
-    url: articles[qs[0]].url,
-    title: articles[qs[0]].title,
-    author: articles[qs[0]].author,
-    comments: comments[qs[0]],
-    votes: calculateVotes(articles[qs[0]].votes,true)
-  }));
+  if ( qs.length > 1 ) response.write(JSON.stringify(data));
+  else response.write(JSON.stringify(data[0]));
   response.end();
 });
 

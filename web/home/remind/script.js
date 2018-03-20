@@ -1,4 +1,4 @@
-var data = [];
+var data;
 
 function renderAll() {
   var table = document.getElementById("results");
@@ -43,17 +43,6 @@ function renderAll() {
 }
 
 window.onload = function() {
-  function getItems(callback,index) {
-    if ( ! index ) index = 0;
-    simpleAJAX(`/api/info?${list[index][0]}`,function(item) {
-      data.push(JSON.parse(item));
-      if ( index + 1 >= Math.min(list.length,10) ) {
-        callback();
-      } else {
-        getItems(callback,index + 1);
-      }
-    });
-  }
   var list = localStorage.getItem("reminders").split(",").map(item => item.split(":"));
   list = list.filter(item => parseInt(item[1]) < new Date().getTime());
   var points = localStorage.getItem("points").split(":").map(item => parseInt(item));
@@ -76,7 +65,8 @@ window.onload = function() {
     div.appendChild(award);
   }
   if ( list.length > 0 ) {
-    getItems(function() {
+    simpleAJAX(`/api/info?${list.map(item => item[0]).join(",")}`,function(result) {
+      data = JSON.parse(result);
       renderNavbar(renderAll);
     });
   } else if ( ! points[2] ) {
