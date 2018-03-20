@@ -66,6 +66,10 @@ function renderAll() {
       }
     }
   }
+  for ( var i = searchData[0].length; i < 3; i++ ) {
+    var col = document.createElement("td");
+    document.getElementById("screen0").appendChild(col);
+  }
   if ( ! localStorage.getItem("points") ) localStorage.setItem("points","0:0:0");
   var text = ["bronze","silver","ruby","gold","emerald","diamond"];
   var points = parseInt(localStorage.getItem("points")[0]);
@@ -96,10 +100,20 @@ function openRandomPage() {
 window.onload = function() {
   if ( localStorage.getItem("location") == "US" ) document.getElementById("location").type.value = "us";
   if ( localStorage.getItem("party") ) setOpinion(parseInt(localStorage.getItem("party")));
+  function merge(data0,data1) {
+    data0 = JSON.parse(data0);
+    if ( ! data0.length ) data0 = [data0];
+    searchData = [data0].concat(JSON.parse(data1));
+    renderNavbar(renderAll);
+  }
   simpleAJAX(`/api/search?retr,${location.search.slice(1) || -1}`,function(data1) {
-    simpleAJAX(`/api/info?${localStorage.getItem("recents")}`,function(data0) {
-      searchData = [JSON.parse(data0)].concat(JSON.parse(data1));
-      renderNavbar(renderAll);
-    });
+    if ( localStorage.getItem("recents") ) {
+      simpleAJAX(`/api/info?${localStorage.getItem("recents")}`,function(data0) {
+        merge(data0,data1)
+      });
+    } else {
+      localStorage.setItem("recents","");
+      merge("[]",data1);
+    }
   });
 }

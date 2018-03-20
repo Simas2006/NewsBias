@@ -37,13 +37,16 @@ td.remind-small {
 td.remind-large {
   width: 70vw;
 }
-td:not(.aligncenter) {
-  vertical-align: top;
-}
 td.screen {
   color: black;
   height: 50vh;
   border-radius: 5%;
+}
+td.wide {
+  width: 100vw;
+}
+td:not(.aligncenter) {
+  vertical-align: top;
 }
 button {
   border-radius: 50%;
