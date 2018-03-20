@@ -69,7 +69,26 @@ function renderNavbar(callback) {
     badge.innerText = reminders.length;
     badge.style.display = "block";
   }
-  callback();
+  simpleAJAX("http://ip-api.com/json",function(locinfo) {
+    locinfo = JSON.parse(locinfo);
+    if ( locinfo.countryCode == "US" ) inUS = true;
+    if ( inUS ) {
+      document.body.style.setProperty("--left-color","blue");
+      document.body.style.setProperty("--left-color-1","#4c4cff");
+      document.body.style.setProperty("--left-color-2","#9999ff");
+      document.body.style.setProperty("--right-color","red");
+      document.body.style.setProperty("--right-color-1","#ff4c4c");
+      document.body.style.setProperty("--right-color-2","#ff9999");
+    } else {
+      document.body.style.setProperty("--left-color","red");
+      document.body.style.setProperty("--left-color-1","#ff4c4c");
+      document.body.style.setProperty("--left-color-2","#ff9999");
+      document.body.style.setProperty("--right-color","blue");
+      document.body.style.setProperty("--right-color-1","#4c4cff");
+      document.body.style.setProperty("--right-color-2","#9999ff");
+    }
+    callback();
+  });
 }
 
 function renderBarGraphic(element,rating) {

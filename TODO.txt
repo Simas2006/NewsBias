@@ -5,7 +5,7 @@
 - Create bar graphic
   - Graphic √
   - Setting √
-- Change color depending on location
+- Change color depending on location √
 - Add "Recently Viewed" to home screen
 - /api/admin/checkreports is free on /api/info
 - Give messages on errors
