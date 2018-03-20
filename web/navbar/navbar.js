@@ -1,13 +1,20 @@
 var inUS = false;
 
-function simpleAJAX(url,callback) {
+function simpleAJAX(url,locator,callback) {
+  if ( ! callback ) callback = locator;
   var req = new XMLHttpRequest();
   req.open("GET",url);
   req.onload = function() {
+    if ( this.responseText.startsWith("err") ) {
+      alert(`A error occurred while communicating with the server: ${this.responseText}
+You may attempt to resolve these issues, or you may report them to the NewsBias development team.
+Sorry about that.`);
+      return;
+    }
     callback(this.responseText);
   }
   req.onerror = function() {
-    callback(`{"countryCode":"--"}`);
+    if ( locator ) callback(`{"countryCode":"--"}`);
   }
   req.send();
 }
@@ -95,7 +102,7 @@ function renderNavbar(callback) {
     inUS = localStorage.getItem("location") == "US";
     merge();
   } else {
-    simpleAJAX("http://ip-api.com/json",function(locinfo) {
+    simpleAJAX("http://ip-api.com/json",true,function(locinfo) {
       locinfo = JSON.parse(locinfo);
       if ( locinfo.countryCode == "US" ) inUS = true;
       localStorage.setItem("location",locinfo.countryCode);

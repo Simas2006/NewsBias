@@ -13,7 +13,7 @@
   - Home page render √
   - Variable handling √
 - /api/admin/checkreports is free on /api/info √
-- Give messages on errors
+- Give messages on errors √
 - Separate code into modules
 - Wiki
   - Features
