@@ -6,6 +6,9 @@ function simpleAJAX(url,callback) {
   req.onload = function() {
     callback(this.responseText);
   }
+  req.onerror = function() {
+    callback(`{"countryCode":"--"}`);
+  }
   req.send();
 }
 

@@ -8,8 +8,10 @@
 - Change color depending on location √
 - Handle blocked location
   - Option √
-  - Error handling
+  - Error handling √
 - Add "Recently Viewed" to home screen
+  - Home page render
+  - Variable handling
 - /api/admin/checkreports is free on /api/info
 - Give messages on errors
 - Wiki
