@@ -1,14 +1,5 @@
 var opinion = 3;
 
-function simpleAJAX(url,callback) {
-  var req = new XMLHttpRequest();
-  req.open("GET",url);
-  req.onload = function() {
-    callback(this.responseText);
-  }
-  req.send();
-}
-
 function setOpinion(value) {
   opinion = value;
   var items = ["left1","left2","left3","center","right3","right2","right1"];

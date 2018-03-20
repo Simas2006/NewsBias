@@ -1,5 +1,14 @@
 var inUS = false;
 
+function simpleAJAX(url,callback) {
+  var req = new XMLHttpRequest();
+  req.open("GET",url);
+  req.onload = function() {
+    callback(this.responseText);
+  }
+  req.send();
+}
+
 function renderNavbar() {
   var points = localStorage.getItem("points").split(":").map(item => parseInt(item));
   if ( points[1] >= Math.pow(2,points[0]) * 100 ) {

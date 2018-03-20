@@ -9,15 +9,6 @@ var searchData;
   - You Decide (new articles/no votes)
 */
 
-function simpleAJAX(url,callback) {
-  var req = new XMLHttpRequest();
-  req.open("GET",url);
-  req.onload = function() {
-    callback(this.responseText);
-  }
-  req.send();
-}
-
 function renderAll() {
   if ( ! localStorage.getItem("graphicType") ) localStorage.setItem("graphicType","pie");
   document.getElementById("type").value = location.search.slice(1) || -1;

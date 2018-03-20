@@ -5,15 +5,6 @@ var reminders;
 var hasActiveReminder;
 var reminderDialogActive = false;
 
-function simpleAJAX(url,callback) {
-  var req = new XMLHttpRequest();
-  req.open("GET",url);
-  req.onload = function() {
-    callback(this.responseText);
-  }
-  req.send();
-}
-
 function renderAll(reports) {
   function renderCommentChain(chain,right) {
     if ( ! right ) right = 0;

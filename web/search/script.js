@@ -1,14 +1,5 @@
 var searchData;
 
-function simpleAJAX(url,callback) {
-  var req = new XMLHttpRequest();
-  req.open("GET",url);
-  req.onload = function() {
-    callback(this.responseText);
-  }
-  req.send();
-}
-
 function renderAll() {
   var qs = location.search.slice(1).split(",");
   document.getElementById("title").innerText = `${searchData.length} result${searchData.length != 1 ? "s": ""} for "${decodeURIComponent(qs.slice(0,-1).join(","))}"`;

@@ -1,14 +1,5 @@
 var data = [];
 
-function simpleAJAX(url,callback) {
-  var req = new XMLHttpRequest();
-  req.open("GET",url);
-  req.onload = function() {
-    callback(this.responseText);
-  }
-  req.send();
-}
-
 function renderAll() {
   var table = document.getElementById("results");
   for ( var i = 0; i < data.length; i++ ) {
