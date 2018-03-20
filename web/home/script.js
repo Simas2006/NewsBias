@@ -102,7 +102,7 @@ window.onload = function() {
   if ( localStorage.getItem("party") ) setOpinion(parseInt(localStorage.getItem("party")));
   function merge(data0,data1) {
     data0 = JSON.parse(data0);
-    if ( ! data0.length ) data0 = [data0];
+    if ( data0.length === undefined ) data0 = [data0];
     searchData = [data0].concat(JSON.parse(data1));
     renderNavbar(renderAll);
   }
