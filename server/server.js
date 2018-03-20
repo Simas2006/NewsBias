@@ -490,7 +490,7 @@ app.use("/api/admin/saltcount",function(request,response) {
   response.end();
 });
 
-app.use("/web",express.static("web"));
+app.use("/web",express.static(__dirname + "/../web"));
 
 app.get("/",function(request,response) {
   response.writeHead(200);
