@@ -20,6 +20,9 @@ textarea {
   font-size: 75%;
   width: 98%;
 }
+form {
+  font-size: 125%
+}
 select {
   background-color: white;
   font-size: 100%;
@@ -89,9 +92,6 @@ button#right3 {
 }
 button#center {
   background-color: white;
-}
-#graphicType {
-  font-size: 125%
 }
 #screen1 {
   border: 5px solid red;

@@ -52,6 +52,18 @@
       <td id="screen6" class="screen"></td>
     </tr>
     <tr>
+      <td class="aligncenter">
+        <form id="location">
+          Location (changes colors):
+            <br />
+          US:
+            <input type="radio" name="type" value="us" onchange="localStorage.setItem('location','US')" />
+            <br />
+          Not US:
+            <input type="radio" name="type" value="notus" onchange="localStorage.setItem('location','--')" checked />
+            <br />
+        </form>
+      </td>
       <td></td>
       <td class="aligncenter">
         <form id="graphicType">
@@ -67,7 +79,6 @@
             <br />
         </form>
       </td>
-      <td></td>
     </tr>
   </table>
 </body>

@@ -80,9 +80,12 @@ function openRandomPage() {
 }
 
 window.onload = function() {
+  if ( localStorage.getItem("location") == "US" ) document.getElementById("location").type.value = "us";
   if ( localStorage.getItem("party") ) setOpinion(parseInt(localStorage.getItem("party")));
-  simpleAJAX(`/api/search?retr,${location.search.slice(1) || -1}`,function(data) {
-    searchData = JSON.parse(data);
-    renderNavbar(renderAll);
+  simpleAJAX(`/api/search?retr,${location.search.slice(1) || -1}`,function(data1) {
+    simpleAJAX(`/api/info?${localStorage.getItem("recents")}`,function(data0) {
+      searchData = [JSON.parse(data0)].concat(JSON.parse(data1));
+      renderNavbar(renderAll);
+    });
   });
 }
