@@ -206,6 +206,7 @@ function renderAll(reports) {
   var row = document.createElement("tr");
   var titles = ["","<S","<M","<W","<C>","W>","M>","S>"]
   var colors = ["white","blue","#4c4cff","#9999ff","white","#ff9999","#ff4c4c","red"];
+  if ( ! inUS ) colors = ["white"].concat(colors.slice(1).reverse());
   for ( var i = 0; i < titles.length; i++ ) {
     var col = document.createElement("td");
     col.innerText = titles[i];
@@ -223,8 +224,8 @@ function renderAll(reports) {
       var col = document.createElement("td");
       col.innerText = data.votes.matrix[i][j] + "%";
       var lbyte = Math.round(255 - 255 * (data.votes.matrix[i][j] / 100));
-      if ( j < 3 ) col.style.backgroundColor = `rgb(${lbyte},${lbyte},255)`;
-      else if ( j > 3 ) col.style.backgroundColor = `rgb(255,${lbyte},${lbyte})`;
+      if ( j < 3 && inUS || j > 3 && ! inUS ) col.style.backgroundColor = `rgb(${lbyte},${lbyte},255)`;
+      else if ( j > 3 && inUS || j < 3 && ! inUS ) col.style.backgroundColor = `rgb(255,${lbyte},${lbyte})`;
       else col.style.backgroundColor = `rgb(${lbyte},${lbyte},${lbyte})`
       row.appendChild(col);
     }

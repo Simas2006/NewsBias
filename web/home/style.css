@@ -57,35 +57,35 @@ button.tiny {
   font-size: 150%;
 }
 .left {
-  color: blue;
+  color: var(--left-color);
 }
 .center {
   color: black;
 }
 .right {
-  color: red;
+  color: var(--right-color);
 }
 .aligncenter {
   text-align: center;
   vertical-align: center;
 }
 button#left1 {
-  background-color: blue;
+  background-color: var(--left-color);
 }
 button#left2 {
-  background-color: #4c4cff;
+  background-color: var(--left-color-1);
 }
 button#left3 {
-  background-color: #99f;
+  background-color: var(--left-color-2);
 }
 button#right1 {
-  background-color: red;
+  background-color: var(--right-color);
 }
 button#right2 {
-  background-color: #ff4c4c;
+  background-color: var(--right-color-1);
 }
 button#right3 {
-  background-color: #f99;
+  background-color: var(--right-color-2);
 }
 button#center {
   background-color: white;

@@ -25,11 +25,11 @@ td.wide {
   text-align: left !important;
 }
 .left {
-  color: blue;
+  color: var(--left-color);
 }
 .center {
   color: black;
 }
 .right {
-  color: red;
+  color: var(--right-color);
 }

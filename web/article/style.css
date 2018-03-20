@@ -21,10 +21,10 @@ input {
   font-size: 100%;
 }
 .left {
-  color: blue;
+  color: var(--left-color);
 }
 .right {
-  color: red;
+  color: var(--right-color);
 }
 .center {
   color: black;
@@ -51,10 +51,10 @@ button:not(.rectangle) {
   border-radius: 50%;
 }
 button.left {
-  background-color: blue;
+  background-color: var(--left-color);
 }
 button.right {
-  background-color: red;
+  background-color: var(--right-color);
 }
 button.center {
   background-color: white;
@@ -106,16 +106,16 @@ td.fade {
   border-radius: 5%;
 }
 td.left.fade {
-  border: 5px solid blue;
-  background-color: #99f;
+  border: 5px solid var(--left-color);
+  background-color: var(--left-color-2);
 }
 td.center.fade {
   border: 5px solid black;
   background-color: #999;
 }
 td.right.fade {
-  border: 5px solid red;
-  background-color: #f99;
+  border: 5px solid var(--right-color);
+  background-color: var(--left-color-2);
 }
 .moderation {
   display: none;

@@ -1,3 +1,5 @@
+var inUS = false;
+
 function renderNavbar() {
   var points = localStorage.getItem("points").split(":").map(item => parseInt(item));
   if ( points[1] >= Math.pow(2,points[0]) * 100 ) {
@@ -65,11 +67,11 @@ function renderBarGraphic(element,rating) {
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,canvas.width,canvas.height);
     ctx.lineWidth = 15;
-    ctx.strokeStyle = "blue";
+    ctx.strokeStyle = inUS ? "blue" : "red";
     ctx.beginPath();
     ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.0 * Math.PI,1.2 * Math.PI,false);
     ctx.stroke();
-    ctx.strokeStyle = "#9999ff";
+    ctx.strokeStyle = `#${inUS ? "99" : "ff"}99${inUS ? "ff" : "99"}`;
     ctx.beginPath();
     ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.2 * Math.PI,1.4 * Math.PI,false);
     ctx.stroke();
@@ -77,11 +79,11 @@ function renderBarGraphic(element,rating) {
     ctx.beginPath();
     ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.4 * Math.PI,1.6 * Math.PI,false);
     ctx.stroke();
-    ctx.strokeStyle = "#ff9999";
+    ctx.strokeStyle = `#${inUS ? "ff" : "99"}99${inUS ? "99" : "ff"}`;
     ctx.beginPath();
     ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.6 * Math.PI,1.8 * Math.PI,false);
     ctx.stroke();
-    ctx.strokeStyle = "red";
+    ctx.strokeStyle = inUS ? "red" : "blue";
     ctx.beginPath();
     ctx.arc(canvas.width / 2,canvas.height / 2,canvas.width / 2 - 10,1.8 * Math.PI,2.0 * Math.PI,false);
     ctx.stroke();
@@ -98,7 +100,9 @@ function renderBarGraphic(element,rating) {
     ctx.beginPath();
     ctx.arc(canvas.width / 2,canvas.height / 2,15,0,2 * Math.PI);
     ctx.fill();
-    ctx.fillStyle = ["blue","black","red"][Math.sign(rating) + 1];
+    var arr = ["blue","black","red"];
+    if ( ! inUS ) arr = arr.reverse();
+    ctx.fillStyle = arr[Math.sign(rating) + 1];
     ctx.textAlign = "center";
     ctx.font = "80px Arial";
     ctx.fillText(activeCount + "%",canvas.width / 2,canvas.height * 0.75);
@@ -108,15 +112,15 @@ function renderBarGraphic(element,rating) {
   function animateFrameBar() {
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = inUS ? "blue" : "red";
     ctx.fillRect(0,10,canvas.width / 5,canvas.height / 8 * 3);
-    ctx.fillStyle = "#9999ff";
+    ctx.fillStyle = `#${inUS ? "99" : "ff"}99${inUS ? "ff" : "99"}`;
     ctx.fillRect(canvas.width / 5,10,canvas.width / 5,canvas.height / 8 * 3);
     ctx.fillStyle = "#999999";
     ctx.fillRect(canvas.width / 5 * 2,10,canvas.width / 5,canvas.height / 8 * 3);
-    ctx.fillStyle = "#ff9999";
+    ctx.fillStyle = `#${inUS ? "ff" : "99"}99${inUS ? "99" : "ff"}`;
     ctx.fillRect(canvas.width / 5 * 3,10,canvas.width / 5,canvas.height / 8 * 3);
-    ctx.fillStyle = "red";
+    ctx.fillStyle = inUS ? "red" : "blue";
     ctx.fillRect(canvas.width / 5 * 4,10,canvas.width / 5,canvas.height / 8 * 3);
     ctx.fillStyle = "black";
     ctx.fillRect(0,10,7,canvas.height / 8 * 3);
@@ -129,7 +133,9 @@ function renderBarGraphic(element,rating) {
     ctx.moveTo(xval,0);
     ctx.lineTo(xval,canvas.height / 8 * 3 + 20);
     ctx.stroke();
-    ctx.fillStyle = ["blue","black","red"][Math.sign(rating) + 1];
+    var arr = ["blue","black","red"];
+    if ( ! inUS ) arr = arr.reverse();
+    ctx.fillStyle = arr[Math.sign(rating) + 1];
     ctx.textAlign = "center";
     ctx.font = "80px Arial";
     ctx.fillText(activeCount + "%",canvas.width / 2,canvas.height * 0.75);
