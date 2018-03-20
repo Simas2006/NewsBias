@@ -9,7 +9,7 @@ function simpleAJAX(url,callback) {
   req.send();
 }
 
-function renderNavbar() {
+function renderNavbar(callback) {
   var points = localStorage.getItem("points").split(":").map(item => parseInt(item));
   if ( points[1] >= Math.pow(2,points[0]) * 100 ) {
     points[1] -= Math.pow(2,points[0]) * 100;
@@ -69,6 +69,7 @@ function renderNavbar() {
     badge.innerText = reminders.length;
     badge.style.display = "block";
   }
+  callback();
 }
 
 function renderBarGraphic(element,rating) {

@@ -28,6 +28,6 @@ function runCreate() {
 }
 
 window.onload = function() {
-  renderNavbar();
+  renderNavbar(Function.prototype);
   setOpinion(3);
 }

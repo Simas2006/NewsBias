@@ -77,10 +77,10 @@ window.onload = function() {
   }
   if ( list.length > 0 ) {
     getItems(function() {
-      renderAll();
+      renderNavbar(renderAll);
     });
   } else if ( ! points[2] ) {
+    renderNavbar(Function.prototype);
     document.getElementById("error").innerText = "You have no triggered reminders right now.";
   }
-  renderNavbar();
 }

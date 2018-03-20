@@ -115,7 +115,7 @@ td.center.fade {
 }
 td.right.fade {
   border: 5px solid var(--right-color);
-  background-color: var(--left-color-2);
+  background-color: var(--right-color-2);
 }
 .moderation {
   display: none;

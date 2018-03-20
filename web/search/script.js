@@ -53,8 +53,7 @@ function changeType(type) {
 window.onload = function() {
   simpleAJAX(`/api/search${location.search}`,function(data) {
     searchData = JSON.parse(data);
-    renderAll();
-    renderNavbar();
+    renderNavbar(renderAll);
     incrementAwardPoints(0.1);
     document.getElementById("navbar-search").value = decodeURIComponent(location.search.slice(1).split(",").slice(0,-1).join(","));
   });

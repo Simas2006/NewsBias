@@ -366,13 +366,14 @@ window.onload = function() {
       simpleAJAX(`/api/admin/saltcount`,function(saltCount) {
         var signature = CryptoJS.AES.encrypt(`checkreports,${parseInt(saltCount)}`,localStorage.getItem("modPassword"));
         simpleAJAX(`/api/admin/checkreports${location.search},${signature}`,function(reports) {
-          renderAll(JSON.parse(reports));
+          renderNavbar(function() {
+            renderAll(JSON.parse(reports));
+          });
         });
       });
     } else {
-      renderAll();
+      renderNavbar(renderAll);
     }
-    renderNavbar();
     setCommentType(1);
   });
   if ( localStorage.getItem("modPassword") ) {

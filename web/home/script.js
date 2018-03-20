@@ -83,7 +83,6 @@ window.onload = function() {
   if ( localStorage.getItem("party") ) setOpinion(parseInt(localStorage.getItem("party")));
   simpleAJAX(`/api/search?retr,${location.search.slice(1) || -1}`,function(data) {
     searchData = JSON.parse(data);
-    renderAll();
-    renderNavbar();
+    renderNavbar(renderAll);
   });
 }
