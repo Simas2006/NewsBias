@@ -380,4 +380,8 @@ window.onload = function() {
     document.getElementById("moderation1").style.display = "block";
     document.getElementById("moderation2").style.display = "block";
   }
+  var recents = localStorage.getItem("recents").split(",");
+  recents = recents.filter(item => item != location.search.slice(1) && item != "").slice(0,2);
+  recents.unshift(location.search.slice(1));
+  localStorage.setItem("recents",recents.join(","))
 }

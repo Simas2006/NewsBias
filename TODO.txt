@@ -11,7 +11,7 @@
   - Error handling √
 - Add "Recently Viewed" to home screen
   - Home page render √
-  - Variable handling
+  - Variable handling √
 - /api/admin/checkreports is free on /api/info
 - Give messages on errors
 - Wiki
