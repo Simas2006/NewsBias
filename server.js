@@ -25,7 +25,7 @@ app.use("/api",function(request,response,next) {
   var remove = Math.floor((new Date().getTime() - ipCooldown[ip].timestamp) / COOLDOWN_UNIT);
   ipCooldown[ip].recentRequests = Math.max(ipCooldown[ip].recentRequests - remove,0);
   ipCooldown[ip].timestamp = new Date().getTime();
-  if ( ipCooldown[ip].recentRequests >= 20 ) {
+  if ( ipCooldown[ip].recentRequests >= 100 ) {
     console.log(`REJECT manyrequests ${ip}`);
     response.writeHead(429);
     response.write("err_many_requests");
@@ -445,7 +445,7 @@ app.use("/api/admin/delete",function(request,response) {
   if ( qs[1] != "null" ) searchTree(comments[qs[0]],qs[1]);
   else delete articles[qs[0]];
   saltCount++;
-  console.log(`REMOVE ${ip} ${qs[0]} ${qs[1] != "null" ? qs[1] : ""}`)
+  console.log(`REMOVE ${ip} ${qs[0]} ${qs[1] != "null" ? qs[1] : ""}`);
   response.writeHead(200);
   response.write("ok");
   response.end();

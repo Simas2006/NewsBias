@@ -12,8 +12,9 @@
 - Add "Recently Viewed" to home screen
   - Home page render √
   - Variable handling √
-- /api/admin/checkreports is free on /api/info
+- /api/admin/checkreports is free on /api/info √
 - Give messages on errors
+- Separate code into modules
 - Wiki
   - Features
   - How to Use
