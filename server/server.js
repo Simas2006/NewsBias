@@ -24,10 +24,13 @@ class IOManager {
     }
     this.databaseNames = ["articles","comments","reports"];
     this.databases = {};
-    loadDatabases(this.saveData,TIME_BETWEEN_SAVE);
+    loadDatabases(function() {
+      setInterval(function() {
+        t.saveData(t);
+      },TIME_BETWEEN_SAVE);
+    });
   }
-  saveData() {
-    var t = this;
+  saveData(t) {
     function saveDatabases(callback,index) {
       if ( ! index ) index = 0;
       fs.writeFile(`${__dirname}/databases/${t.databaseNames[index]}.json`,JSON.stringify(t.databases[t.databaseNames[index]]),function(err,data) {
