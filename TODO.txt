@@ -17,7 +17,8 @@
 - Separate code into modules √
 - Obfuscate statistics randomly √
 - Wiki
-  - TOS
-  - How to Use
+  - TOS √
+  - Features
+  - About
   - For Mods
 - Add footer with links
