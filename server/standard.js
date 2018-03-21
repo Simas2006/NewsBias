@@ -342,9 +342,21 @@ router.get("/stats",function(request,response) {
   var url = request.url.split("?")[0];
   var qs = request.url.split("?").slice(1).join("?").split(",");
   var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  var votes = manager.databases.articles[qs[0]].votes;
+  var newVotes = [];
+  for ( var i = 0; i < votes.length; i++ ) {
+    newVotes.push([]);
+    for ( var j = 0; j < votes[i].length; j++ ) {
+      var variance = Math.max(votes[i][j] / 10,1);
+      var toChange = Math.floor(Math.random() * (variance + 1));
+      var sign = Math.random() > 0.5 ? 1 : -1;
+      newVotes[i].push(Math.max(votes[i][j] + toChange * sign,0));
+    }
+  }
+  console.log(`STATS ${qs[0]}`);
   response.writeHead(200);
-  var text = JSON.stringify(manager.databases.articles[qs[0]].votes);
-  if ( qs[1] == "csv" ) text = manager.databases.articles[qs[0]].votes.map(item => item.join(",")).join("\n");
+  var text = JSON.stringify(newVotes);
+  if ( qs[1] == "csv" ) text = newVotes.map(item => item.join(",")).join("\n");
   response.write(text);
   response.end();
 });

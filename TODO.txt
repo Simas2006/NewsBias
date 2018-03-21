@@ -15,8 +15,9 @@
 - /api/admin/checkreports is free on /api/info √
 - Give messages on errors √
 - Separate code into modules √
-- Obfuscate statistics randomly
+- Obfuscate statistics randomly √
 - Wiki
   - TOS
   - How to Use
   - For Mods
+- Add footer with links
