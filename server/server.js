@@ -68,6 +68,9 @@ app.use("/api",function(request,response,next) {
 
 manager = new IOManager();
 
+app.use("/api",require("./standard")(manager));
+app.use("/api/admin",require("./admin")(manager,MOD_PASSWORD));
+
 app.use("/web",express.static(__dirname + "/../web"));
 
 app.get("/",function(request,response) {

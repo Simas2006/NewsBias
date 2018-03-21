@@ -14,8 +14,9 @@
   - Variable handling √
 - /api/admin/checkreports is free on /api/info √
 - Give messages on errors √
-- Separate code into modules
+- Separate code into modules √
+- Add feedback page
 - Wiki
-  - Features
+  - TOS
   - How to Use
   - For Mods
