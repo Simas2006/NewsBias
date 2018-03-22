@@ -10,6 +10,8 @@ var ipCooldown = {};
 var saltCount = 0;
 var manager;
 
+if ( ! MOD_PASSWORD ) throw new SyntaxError("No password given!");
+
 class IOManager {
   constructor() {
     var t = this;
