@@ -220,14 +220,14 @@ router.get("/search",function(request,response) {
     - One-Sided (overall 75% biased,one side only)
     - You Decide (new manager.databases.articles/no votes)
   */
-  function routerlyMatrix(votes,matrix) {
+  function applyMatrix(votes,matrix) {
     var sum = 0;
     for ( var i = 0; i < votes.length; i++ ) {
       for ( var j = 0; j < votes[i].length; j++ ) {
         sum += votes[i][j] * matrix[j];
       }
     }
-    return sum;
+    return sum / arrSum(votes);
   }
   function sortOnMatrix(items,matrix,type) {
     var arr = [];
@@ -237,7 +237,7 @@ router.get("/search",function(request,response) {
     }
     if ( type != -1 ) arr = arr.filter(item => item.category == type);
     return arr.sort(function(a,b) {
-      return routerlyMatrix(b.votes,matrix) - routerlyMatrix(a.votes,matrix);
+      return applyMatrix(b.votes,matrix) - applyMatrix(a.votes,matrix);
     }).map(function(item) {
       return {
         id: item.id,
@@ -257,8 +257,8 @@ router.get("/search",function(request,response) {
     }
     if ( type != -1 ) arr = arr.filter(item => item.category == type);
     return arr.sort(function(a,b) {
-      var vala = Math.abs(routerlyMatrix(a.votes,matrixa) - routerlyMatrix(a.votes,matrixb)) * multiplier;
-      var valb = Math.abs(routerlyMatrix(b.votes,matrixa) - routerlyMatrix(b.votes,matrixb)) * multiplier;
+      var vala = Math.abs(applyMatrix(a.votes,matrixa) - applyMatrix(a.votes,matrixb)) * multiplier;
+      var valb = Math.abs(applyMatrix(b.votes,matrixa) - applyMatrix(b.votes,matrixb)) * multiplier;
       return valb - vala;
     }).map(function(item) {
       return {
@@ -289,7 +289,7 @@ router.get("/search",function(request,response) {
       sortOnMatrix(manager.databases.articles,[1,2,4,6,4,2,1],qs[1]).slice(0,3),
       sortOnDualMatrix(manager.databases.articles,[1,1,1,0,0,0,0],[0,0,0,0,1,1,1],-1,qs[1]).slice(0,3),
       sortOnDualMatrix(manager.databases.articles,[1,1,1,0,0,0,0],[0,0,0,0,1,1,1],1,qs[1]).slice(0,3),
-      sortOnMatrix(manager.databases.articles,[-1,-1,-1,-1,-1,-1,-1],qs[1]).slice(0,3)
+      sortOnMatrix(manager.databases.articles,[1,1,1,1,1,1,1],qs[1]).reverse().slice(0,3)
     ];
     response.writeHead(200);
     response.write(JSON.stringify(results));
