@@ -18,7 +18,8 @@
 - Obfuscate statistics randomly √
 - Wiki
   - TOS √
-  - Features
+  - Features √
   - About
   - For Mods
+- Add cookie alert (EU LAW)
 - Add footer with links
