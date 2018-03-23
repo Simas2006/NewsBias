@@ -20,7 +20,7 @@ Sorry about that.`);
 }
 
 function renderNavbar(callback) {
-  if ( ! localStorage.getItem("points") ) localStorage.setItem("points","0:0");
+  if ( ! localStorage.getItem("points") ) localStorage.setItem("points","0:0:0");
   var points = localStorage.getItem("points").split(":").map(item => parseInt(item));
   if ( points[1] >= Math.pow(2,points[0]) * 100 ) {
     points[1] -= Math.pow(2,points[0]) * 100;
