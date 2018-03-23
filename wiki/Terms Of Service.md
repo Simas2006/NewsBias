@@ -7,7 +7,8 @@ For the purposes of these terms:
   - "The Site" means the interface by which the NewsBias program is accessed from a non-Moderator standpoint,
   - "The Owner" means the Owner of the NewsBias program in source and object form,
   - "Moderator" means a person authorized by the Owner to moderate all content on the site.
-Section 7 shall only apply to Moderators.
+Section 8 shall only apply to Moderators.
+For the Cookie Policy, please see Section 7.
 
 2 - Interface.
 
@@ -53,9 +54,20 @@ You are permitted to:
   - Remove articles or comments from the Site,
   - Increment (or decrement) the votes on any particular comment substantially
   - Access unscrambled statistics
-  
+
 In order to access these functions, the Owner will provide you with a code, which you may input into any Device which you own in order to access the capabilities. You may not publish the code in any form or provide to any person unauthorized by the Owner the code.
 
-8 - Changing and Termination Rights.
+7 - Cookie Policy
+
+NewsBias does not use cookies in the normal sense, it uses a capability in JavaScript called Local Storage. Local Storage is necessary for the Site to function properly. If you do not consent to the usage of Local Storage by the Site, you may not use the Site, and these Terms shall be unilaterally terminated except for Section 4. The Site stored the following data in LS:
+  - "graphicType": The type of graphic you selected to be displayed on the site (either "pie" or "bar")
+  - "location": The country in which you first accessed the Site. Used to determine your color palette and can be overwritten in the Site (either "in US" or "not in US")
+  - "modPassword": The password which is used to authorize you as a moderator (for Moderators only)
+  - "party": The party you selected to vote on articles on behalf of (value from 0-5)
+  - "points": A three value state, storing your current badge, your amount of intermediary points, and whether to trigger a new badge.
+  - "recents": The articles you have recently viewed, used to display the "Recently Viewed" section on the front page (comma-separated list, 0-3 in length)
+  - "reminders": The articles you have activated reminders on, used to display the reminders page. (comma-separated list, unlimited)
+
+8 - Alteration and Termination Rights.
 
 You may not terminate these terms after you have published any content defined in Section 4. NewsBias will publicly display any changes to these terms on the Site for no less than ten Days before the changes shall take effect.
