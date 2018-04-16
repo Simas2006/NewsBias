@@ -110,6 +110,7 @@ function renderNavbar(callback) {
     });
   }
   renderCookiePanel();
+  renderFooter();
 }
 
 function renderBarGraphic(element,rating) {
@@ -228,6 +229,25 @@ function renderCookiePanel() {
   }
   div.appendChild(button);
   document.body.appendChild(div);
+}
+
+function renderFooter() {
+  var footer = document.getElementById("navbar-footer");
+  var row = document.createElement("tr");
+  var items = ["About","Copyright","Features","For_Moderators","Terms_Of_Service"];
+  for ( var i = 0; i < items.length; i++ ) {
+    var col = document.createElement("td");
+    col.className = "navbar-item navbar-item-small aligncenter";
+    col.id = "C:" + i;
+    col.onclick = function() {
+      window.open(`https://github.com/Simas2006/NewsBias/blob/master/wiki/${items[parseInt(this.id.slice(2))]}.md`);
+    }
+    var span = document.createElement("span");
+    span.innerHTML = items[i].split("_").join(" ");
+    col.appendChild(span);
+    row.appendChild(col);
+  }
+  footer.appendChild(row);
 }
 
 function incrementAwardPoints(val) {

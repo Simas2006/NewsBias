@@ -1,3 +1,6 @@
+body {
+  padding: 0px;
+}
 canvas {
   border: 0px;
   width: 50%;
@@ -5,10 +8,10 @@ canvas {
 div.big-graphic > canvas {
   width: 100% !important;
 }
-#navbar {
+#navbar,#navbar-footer {
   background-color: #333;
   vertical-align: center;
-  width: calc(100vw - 20px);
+  width: calc(100vw);
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -20,7 +23,7 @@ div.big-graphic > canvas {
 .navbar-item {
   color: white;
   padding: 10px;
-  vertical-align: center;
+  vertical-align: middle;
 }
 .navbar-item-small {
   width: 5vw;
@@ -54,6 +57,12 @@ div.big-graphic > canvas {
   padding-bottom: 4px;
   border-radius: 50%;
   font-size: 75%;
+}
+.navbar-copyright {
+  cursor: default;
+}
+.navbar-copyright:hover {
+  background-color: #333 !important;
 }
 .navbar-cookie-panel {
   position: fixed;
