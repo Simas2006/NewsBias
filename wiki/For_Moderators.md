@@ -10,7 +10,7 @@ and enter the following command:
 
 Reload the page. If you have entered the password correctly, you will see all the moderator data.
 
-If you receive an error which says “err_fail_decrypt”, you have either entered a mistyped or incorrect password. To revoke an invalid password, type:
+If you receive an error which says “err_fail_decrypt”, you have entered a mistyped or incorrect password. To revoke an invalid password, type:
 
 ‘localStorage.removeItem(“modPassword”)’
 
