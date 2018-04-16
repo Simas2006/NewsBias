@@ -218,7 +218,7 @@ function renderCookiePanel() {
   div.appendChild(text);
   var link = document.createElement("a");
   link.innerText = "Read the TOS ";
-  link.href = "https://github.com/Simas2006/NewsBias/blob/master/wiki/Terms%20Of%20Service.md";
+  link.href = "https://github.com/Simas2006/NewsBias/blob/master/wiki/Terms_Of_Service.md";
   link.target = "_blank";
   div.appendChild(link);
   var button = document.createElement("button");
@@ -243,7 +243,7 @@ function renderFooter() {
       window.open(`https://github.com/Simas2006/NewsBias/blob/master/wiki/${items[parseInt(this.id.slice(2))]}.md`);
     }
     var span = document.createElement("span");
-    span.innerHTML = items[i].split("_").join(" ");
+    span.innerText = items[i].split("_").join(" ");
     col.appendChild(span);
     row.appendChild(col);
   }
