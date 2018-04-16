@@ -109,6 +109,7 @@ function renderNavbar(callback) {
       merge();
     });
   }
+  renderCookiePanel();
 }
 
 function renderBarGraphic(element,rating) {
@@ -205,6 +206,28 @@ function renderBarGraphic(element,rating) {
   } else if ( localStorage.getItem("graphicType") == "bar" ) {
     graphicInterval = setInterval(animateFrameBar,25);
   }
+}
+
+function renderCookiePanel() {
+  if ( localStorage.getItem("disableCookiePanel") ) return;
+  var div = document.createElement("div");
+  div.className = "navbar-cookie-panel";
+  var text = document.createElement("span");
+  text.innerText = "By continuing to use NewsBias, you agree to our Terms of Service. ";
+  div.appendChild(text);
+  var link = document.createElement("a");
+  link.innerText = "Read the TOS ";
+  link.href = "https://github.com/Simas2006/NewsBias/blob/master/wiki/Terms%20Of%20Service.md";
+  link.target = "_blank";
+  div.appendChild(link);
+  var button = document.createElement("button");
+  button.innerText = "I Accept";
+  button.onclick = function() {
+    localStorage.setItem("disableCookiePanel","1");
+    document.body.removeChild(div);
+  }
+  div.appendChild(button);
+  document.body.appendChild(div);
 }
 
 function incrementAwardPoints(val) {

@@ -58,6 +58,7 @@ NewsBias does not use cookies in the normal sense, it uses a capability in JavaS
   - "points": A three value state, storing your current badge, your amount of intermediary points, and whether to trigger a new badge.
   - "recents": The articles you have recently viewed, used to display the "Recently Viewed" section on the front page (comma-separated list, 0-3 in length)
   - "reminders": The articles you have activated reminders on, used to display the reminders page. (comma-separated list, unlimited)
+  - "disableCookiePanel": If you have chosen to accept these Terms through the Site, this flag will be set.
 You agree to allow NewsBias to use Local Storage on your computer.
 
 8 - Moderation.
