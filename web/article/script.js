@@ -4,6 +4,7 @@ var commentDialogSelected;
 var reminders;
 var hasActiveReminder;
 var reminderDialogActive = false;
+var embedDialogActive = false;
 
 function renderAll(reports) {
   function renderCommentChain(chain,right) {
@@ -310,6 +311,7 @@ function reminderDropdownOperation(type) {
     document.getElementById("reminderButton").innerHTML = "&#x1f514";
   }
   toggleReminderDropdown();
+  hasActiveReminder = type > 0;
 }
 
 function toggleArticleDropdown(button) {
@@ -333,8 +335,8 @@ function toggleReminderDropdown(button) {
   if ( hasActiveReminder ) {
     reminders = reminders.filter(item => item[0] != location.search.slice(1));
     localStorage.setItem("reminders",reminders.map(item => item.join(":")).join(","));
-    hasActiveReminder = false;
     document.getElementById("reminderButton").innerHTML = "&#x1f515";
+    hasActiveReminder = false;
   } else {
     var dropdown = document.getElementById("reminderDropdown");
     if ( ! reminderDialogActive ) {
