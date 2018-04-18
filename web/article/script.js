@@ -353,15 +353,40 @@ function toggleReminderDropdown(button) {
   }
 }
 
+function toggleEmbed(button) {
+  var dropdown = document.getElementById("embedDropdown")
+  dropdown.style.display = embedDialogActive ? "none" : "block";
+  if ( ! embedDialogActive ) {
+    var position = button.getBoundingClientRect();
+    var bodyPosition = document.body.getBoundingClientRect();
+    dropdown.style.position = "absolute";
+    dropdown.style.left = (position.left - bodyPosition.left + position.width * 0.5) + "px";
+    dropdown.style.top = (position.top - bodyPosition.top + position.height * 0.5) + "px";
+  }
+  embedDialogActive = ! embedDialogActive;
+}
+
+function copyEmbedText() {
+  var text = document.createElement("textarea");
+  text.className = "invisible";
+  text.value = `<iframe src="${location.hostname}${location.port ? ":" + location.port : ""}/web/embed/index.html${location.search}" width="400" height="411"></iframe>`;
+  text.width = 0;
+  text.height = 0;
+  document.body.appendChild(text);
+  text.select();
+  document.execCommand("copy");
+  document.body.removeChild(text);
+  toggleEmbed();
+}
+
 window.onload = function() {
   if ( ! localStorage.getItem("reminders") ) localStorage.setItem("reminders","");
   reminders = localStorage.getItem("reminders").split(",").map(item => item.split(":"));
   hasActiveReminder = reminders.filter(item => item[0] == location.search.slice(1)).length > 0;
   reminders = reminders.filter(item => parseInt(item[1]) >= new Date().getTime() || item[0] != location.search.slice(1));
   localStorage.setItem("reminders",reminders.map(item => item.join(":")).join(","));
-  if ( hasActiveReminder ) {
-    document.getElementById("reminderButton").innerHTML = "&#x1f514";
-  }
+  if ( hasActiveReminder ) document.getElementById("reminderButton").innerHTML = "&#x1f514";
+  document.getElementById("embedText").value = `<iframe src="${location.hostname}${location.port ? ":" + location.port : ""}" width="400" height="411"></iframe>`;;
   simpleAJAX(`/api/info${location.search}`,function(result) {
     data = JSON.parse(result);
     if ( localStorage.getItem("modPassword") ) {
@@ -385,5 +410,5 @@ window.onload = function() {
   var recents = localStorage.getItem("recents").split(",");
   recents = recents.filter(item => item != location.search.slice(1) && item != "").slice(0,2);
   recents.unshift(location.search.slice(1));
-  localStorage.setItem("recents",recents.join(","))
+  localStorage.setItem("recents",recents.join(","));
 }

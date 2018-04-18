@@ -34,6 +34,7 @@
         <span id="author"></span>
         <button id="reminderButton" onclick="toggleReminderDropdown(this)" class="tiny">&#x1f515;</button>
         <button class="tiny wide" onclick="toggleArticleDropdown(this)">&#8226; &#8226; &#8226;</button>
+        <button class="tiny" onclick="toggleEmbed(this)">&#128206;</button>
       </td>
       <td>
         <h1 class="right">
@@ -124,6 +125,13 @@
     <button class="rectangle" onclick="reminderDropdownOperation(3)">In 1 Week</button>
     <button class="rectangle" onclick="reminderDropdownOperation(4)">In 2 Weeks</button>
     <button class="rectangle" onclick="reminderDropdownOperation(5)">In 1 Month</button>
+  </div>
+  <div id="embedDropdown" class="dropdown">
+    <p>Copy this text into your HTML document:</p>
+    <input id="embedText" value="" disabled />
+    <br />
+    <br />
+    <button onclick="copyEmbedText()" class="rectangle">Copy</button>
   </div>
   <br />
   <table id="navbar-footer">

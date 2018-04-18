@@ -138,6 +138,13 @@ td.right.fade {
 .dropdown > button:hover {
   background-color: #ccc;
 }
+.dropdown > button.rectangle,.dropdown > button.rectangle:hover {
+  background-color: #0f0;
+  text-align: center;
+}
+.dropdown > input {
+  color: black;
+}
 .flag {
   color: red;
 }
@@ -152,4 +159,10 @@ td.right.fade {
   width: 3vw;
   height: 5vw;
   vertical-align: middle;
+}
+#embedDropdown {
+  text-align: center;
+}
+#embedText {
+  width: 95%;
 }
