@@ -1,4 +1,4 @@
-NewsBias is a website, powered by users, that inform the people about biased (or unbiased) sources, articles, and statements. Some features of NewsBias:
+NewsBias is a website, powered by users, that informs the people about biased (or unbiased) sources, articles, and statements. Some features of NewsBias:
   - Vote on articles and discussions on the site completely anonymously
   - Read statistics and valuable opinions on articles, or write your own
   - Create article posts on the site, and leave a reminder to see what our users think
