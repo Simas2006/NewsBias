@@ -1,4 +1,5 @@
 var CryptoJS = require("./aes");
+var fs = require("fs");
 var express = require("express");
 var router = new express.Router();
 var manager;
@@ -106,6 +107,42 @@ router.get("/rain",function(request,response) {
   response.writeHead(200);
   response.write("ok");
   response.end();
+});
+
+router.get("/takedown",function(request,response) {
+  var url = request.url.split("?")[0];
+  var qs = request.url.split("?").slice(1).join("?").split(",");
+  var ip = request.connection.remoteAddress || request.headers["x-forwarded-for"];
+  qs = CryptoJS.AES.decrypt(qs[0],MOD_PASSWORD).toString(CryptoJS.enc.Utf8).split(",");
+  if ( qs[0] != "takedown" || qs[2] != saltCount ) {
+    console.log(`REJECT nodecrypt ${ip} ${qs[0]} ${qs[1] ? qs[1] : ""}`);
+    response.writeHead(400);
+    response.write("err_fail_decrypt");
+    response.end();
+    return;
+  }
+  fs.readFile(__dirname + "/takedownKey.txt",function(err,data) {
+    if ( err ) throw err;
+    data = data.toString().trim();
+    if ( data == "" ) {
+      response.writeHead(400);
+      response.write("err_fail_decrypt");
+      response.end();
+      return;
+    }
+    if ( data == qs[1] ) {
+      response.writeHead(200);
+      response.write("ok");
+      response.end();
+      console.log(`!!! TAKEDOWN COMMAND SUCCESSFULLY ISSUED OVER HTTP !!!`);
+      process.exit(0);
+    } else {
+      console.log(`REJECT nodecrypt ${ip} ${qs[0]} ${qs[1] ? qs[1] : ""}`);
+      response.writeHead(400);
+      response.write("err_fail_decrypt");
+      response.end();
+    }
+  });
 });
 
 router.get("/saltcount",function(request,response) {
