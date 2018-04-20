@@ -138,7 +138,7 @@ td.right.fade {
 .dropdown > button:hover {
   background-color: #ccc;
 }
-.dropdown > button.rectangle,.dropdown > button.rectangle:hover {
+#embedDropdown > button.rectangle,#embedDropdown > button.rectangle:hover {
   background-color: #0f0;
   text-align: center;
 }

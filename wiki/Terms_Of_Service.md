@@ -67,7 +67,6 @@ You are permitted to:
   - Access reports submitted by Users anonymously,
   - Remove articles or comments from the Site,
   - Increment (or decrement) the votes on any particular comment substantially
-  - Access unscrambled statistics
 
 In order to access these functions, the Owner will provide you with a code, which you may input into any Device which you own in order to access the capabilities. You may not publish the code in any form or provide to any person unauthorized by the Owner the code.
 
